@@ -8,26 +8,26 @@
 
 import wpilib
 
-from subsytems.arm import Arm
+from subsystems.arm import Arm
 from constants import Constants
 
 
 class MyRobot(wpilib.TimedRobot):
-    def robotInit(self):
+ def robotInit(self):
         self.arm = Arm()
         self.joystick = wpilib.Joystick(Constants.kJoystickPort)
 
-    def teleopInit(self):
-        self.arm.loadPreferences()
+def teleopInit(self):
+    self.arm.loadPreferences()
 
-    def teleopPeriodic(self):
-        if self.joystick.getTrigger():
-            # Here, we run PID control like normal.
-            self.arm.reachSetpoint()
-        else:
-            # Otherwise, we disable the motor.
-            self.arm.stop()
-
-    def disabledInit(self):
-        # This just makes sure that our simulation code knows that the motor's off.
+def teleopPeriodic(self):
+    if self.joystick.getTrigger():
+        # Here, we run PID control like normal.
+        self.arm.reachSetpoint()
+    else:
+        # Otherwise, we disable the motor.
         self.arm.stop()
+
+def disabledInit(self):
+    # This just makes sure that our simulation code knows that the motor's off.
+    self.arm.stop()

@@ -49,7 +49,7 @@ Transitioning to a new programming language can be daunting, especially with a t
 - **Small Projects:**
   - Assign simple tasks in Python, such as basic control loops or sensor integration, to build confidence.
 
-**Phase 2: Skill Building and Code Conversion (Weeks 3-6)**
+**Phase 2: Skill Building and Robopy Intro (Weeks 3-6)**
 - **Code Translation Sessions:**
   - Work together to translate existing Java code into Python. Start with basic robot functions, gradually moving to more complex systems.
 - **Pair Programming:**

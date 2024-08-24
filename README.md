@@ -7,7 +7,15 @@
 This repository contains the resources and code for our FRC robot transition from Java to Python..
 
 
-!!NEED TO EDIT Below.............................................................
+!!NEED TO EDIT Below.................-------------------------------------............................................
+Link to reasoning for [switch to python](why_switch-python.md)
+
+link to [RobotPython2025 Repo](https://github.com/Team2556/RobotPython2025
+)
+
+link to [Python Training](training/traning-plan.md) plan
+
+link to [Systems Engineering exercize](training/challenges/SE-training.md)
 
 ## Setup
 

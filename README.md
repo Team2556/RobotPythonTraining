@@ -9,7 +9,7 @@ This repository contains the resources and code we use to initally transition to
 
 The 2025 REEFScape season repository (for competiton code) is located at [RobotPython2025](https://github.com/Team2556/RobotPython2025) #TODO: update the repo name and this link once team is over thier initial freakout
 
-# Where togo, What to do
+# Where to go, What to do
 - Get [GitHUB](https://github.com/) account and join the [FRC Team 2556](https://github.com/Team2556) organization
 - Review the [Python Training Plan](training/traning-plan.md) overview.
 - Review #TODO: project, issues, milestones, blahblah.md, wiki ?... for current training activities
@@ -33,7 +33,7 @@ The 2025 REEFScape season repository (for competiton code) is located at [RobotP
 2. Clone the repository:
    ```sh
    git clone https://github.com/Team2556/RobotPython.git
-   cd RobotPython2025
+   cd RobotPython
 3. ??automatic for newcomer?? Activate the virtual environment:
     ```sh
     On Windows: 
@@ -63,44 +63,86 @@ The 2025 REEFScape season repository (for competiton code) is located at [RobotP
     ```sh
     python src/robot.py
 
-# Repository Structure
-- We plan to use the following structure; It is described more in [the Training Plan](training/traning-plan.md)
-    <!-- 
-    │   ├── ?maybe? __init__.py
-    │   ├── robot.py
-    ├── ?maybe? config/
-    │   └── config.yaml
-    -->
-    ```sh
-    RobotPython/
-    ├── sandbox/
-    |   ├── pyproject.toml
-    │   ├── src/
-    |   ├── robot.py
-    |   ├── constants.py
-    |   ├── subsystems/
-    |   │   ├── __init__.py
-    |   │   └── example_subsystem.py 
-    |   ├── commands/
-    |   │   ├── __init__.py
-    |   │   └── example_command.py 
-    |   ├── autonomous/
-    |   │   ├── __init__.py
-    |   │   └── example_command.py 
-    |   ├── pathplanner/deploy/pathplanner/
-    |   │   ├── autos
-    |   │   └── paths
-    |   ├── tests/
-    |   │   ├── __init__.py
-    |   │   └── test_robot.py
-    ├── docs/
-    ├── resources/
-    ├── training/
-    ├── .gitignore
-    ├── README.md
-    
-    
+#### **Repository Layout:**
 
+1. **Root Directory:**
+   - **README.md:**  
+     - A comprehensive overview of the project, including a brief introduction, instructions on how to get started, and links to key resources (like Python tutorials or RobotPy documentation).
+   - **CONTRIBUTING.md:**  
+     - Guidelines for contributing to the repository, including coding standards, commit message conventions, and pull request processes.
+   - **.gitignore:**  
+     - Specify files and directories to be ignored by Git (e.g., build artifacts, virtual environments).
+
+2. **Directory Structure:**
+
+   - **`/docs/`:**  
+     - Documentation files (e.g., installation guides, how-to documents, explanation of the code architecture).
+     - Consider adding subfolders for `training_materials`, `API_docs`, and `design_docs`.
+
+   - **`/training/`:**
+     - **`/basics/`:** Python basics (syntax, loops, functions, etc.)
+     - **`/robot_basics/`:** Simple Python examples related to robot control (e.g., motor control, sensor integration).
+     - **`/advanced/`:** More complex examples (e.g., autonomous mode routines, vision processing).
+     - **`/challenges/`:** Coding challenges and exercises for team members to practice.
+     - **`/solutions/`:** Example solutions to the challenges.
+
+   - **`/sandbox/`:**  
+     - The main source code directory for the robot's Python code, organized by function. 
+     - **Top-Level Directories:**
+       - **`commands/`**: Houses command logic that directs subsystems.
+       - **`components/`**: Stores smaller, reusable pieces of code that don't belong to a specific subsystem but are used across multiple areas (e.g., custom sensors, utility functions).
+       - **`subsystems/`**: Contains the code for each major subsystem of the robot, such as drivetrain, shooter, intake, etc.
+       - **`autonomous/`**: Dedicated to autonomous routines and strategies.
+       - **`pathplanner/`**: Contains path planning logic, trajectory generation, and related code.
+       - **Example Layout:**
+         ```
+         /sandbox/
+         ├── commands/
+         │   ├── drive_command.py
+         │   ├── shoot_command.py
+         │   └── tests/
+         ├── components/
+         │   ├── custom_sensor.py
+         │   └── utils.py
+         ├── subsystems/
+         │   ├── drivetrain.py
+         │   ├── intake.py
+         │   ├── shooter.py
+         │   └── tests/
+         ├── autonomous/
+         │   ├── auto_routines.py
+         │   └── tests/
+         ├── pathplanner/
+         │   ├── trajectory_generator.py
+         │   └── path_follower.py
+         └── main.py
+         ```
+     - **`/tests/`:** Unit tests for each component and subsystem. Encourage test-driven development (TDD) where feasible.
+
+   - **`/scripts/`:**
+     - Utility scripts for common tasks (e.g., deploying code to the robot, running simulations).
+
+   - **`/resources/`:**
+     - Diagrams, flowcharts, and other non-code assets that are useful for understanding the robot's design and function.
+
+#### **Version Control Practices:**
+
+- **Branches:**
+  - **`main` Branch:**  
+    - The stable branch that contains tested and competition-ready code.
+  - **`dev` Branch:**  
+    - The branch where active development happens. All features and changes are merged here first.
+  - **Feature Branches:**  
+    - Create separate branches for new features, e.g., `feature/drivetrain-improvements`. Once a feature is complete, it should be merged into `dev` after code review.
+
+- **Pull Requests (PRs):**
+  - Require team members to create PRs when merging code from feature branches to `dev` or `dev` to `main`. 
+  - Use PRs for code reviews, where other team members can comment and suggest improvements.
+
+- **Issues and Tasks:**
+  - Use GitHub Issues to track bugs, feature requests, and tasks. Label them accordingly (e.g., `bug`, `enhancement`, `documentation`).
+  - Assign team members to issues based on their skills and areas they want to develop.
+  
 # Other Resources
 - Download python (3.12.5): https://www.python.org/downloads/windows/
 - Python tutorial: https://docs.python.org/3.12/tutorial/index.html

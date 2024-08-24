@@ -1,36 +1,37 @@
-Transitioning to a new programming language can be daunting, especially with a tight timeline and some resistance from the team. Below is a pitch to persuade the team to embrace the change, followed by a detailed plan to ensure the transition is smooth and successful.
-
-### **Pitch for Switching from Java to Python:**
+### **Pitch for Switching from Java to Python!!**
 
 ---
 
-**Title:** **Why Python is the Right Choice for Our FRC Team**
+**Why Python is the Right Choice for Our FRC Team**
 
 **Introduction:**
-- **Engage the Team:** "We all know how crucial our programming is for the success of our robot on the field. Today, I want to talk about an exciting opportunity to enhance our programming efficiency, creativity, and problem-solving skills by transitioning from Java to Python."
+
+Transitioning to a new programming language can be daunting, especially with a tight timeline and some resistance from the team. Below is some reasoning to help persuade the team to embrace the change, followed by a detailed plan to ensure the transition is smooth and successful.
+
+- **First of All:** We all know how crucial our programming is for the success of our robot on the field. However, this an exciting opportunity to enhance our programming efficiency, creativity, and problem-solving skills by transitioning from Java to Python.
 
 **The Case for Python:**
 1. **Ease of Learning and Use:**
-   - "Python is renowned for its simplicity and readability. Unlike Java, Python’s syntax is concise and more intuitive, allowing us to write less code to achieve the same functionality. This will speed up our development process, enabling us to prototype and iterate faster."
+   - Python is renowned for its simplicity and readability. Unlike Java, Python’s syntax is concise and more intuitive, allowing us to write less code to achieve the same functionality. This will speed up our development process, enabling us to prototype and iterate faster.
 
 2. **Versatility and Flexibility:**
-   - "Python isn’t just for robots—it's used in everything from web development to AI and machine learning. By learning Python, we’re not only preparing for this year’s competition but also building skills that will be invaluable in the future, both in academics and industry."
+   - Python isn’t just for robots—it's used in everything from web development to AI and machine learning. By learning Python, we’re not only preparing for this year’s competition but also building skills that will be invaluable in the future, both in academics and industry.
 
 3. **Rapid Prototyping and Debugging:**
-   - "Python’s dynamic nature and vast library support make it ideal for rapid prototyping. This will allow us to test new ideas quickly and debug issues more effectively. We can focus more on refining strategies and optimizing performance, rather than getting bogged down by code complexities."
+   - Python’s dynamic nature and vast library support make it ideal for rapid prototyping. This will allow us to test new ideas quickly and debug issues more effectively. We can focus more on refining strategies and optimizing performance, rather than getting bogged down by code complexities.
 
 4. **Community and Resources:**
-   - "The Python community is enormous and incredibly supportive. There are countless resources available—tutorials, libraries, forums—that can help us overcome any challenges we might face during the transition. Additionally, platforms like RobotPy have made Python a viable choice for FRC, providing the tools we need to succeed."
+   - The Python community is enormous and incredibly supportive. There are countless resources available—tutorials, libraries, forums—that can help us overcome any challenges we might face during the transition. Additionally, platforms like RobotPy have made Python a viable choice for FRC, providing the tools we need to succeed.
 
 5. **Preparation for the Future:**
-   - "Python is increasingly becoming the language of choice in various tech fields, including robotics. By mastering Python, we’re not just getting ready for this season; we’re also equipping ourselves with skills that will be valuable in college and future careers."
+   - Python is increasingly becoming the language of choice in various tech fields, including robotics. By mastering Python, we’re not just getting ready for this season; we’re also equipping ourselves with skills that will be valuable in college and future careers.
 
 **Addressing Concerns:**
 - **Time and Resistance:**
-   - "I understand that learning a new language might seem challenging, especially with the competition season approaching. However, with a focused plan and collaborative effort, I’m confident we can make the transition in three months. We’ll start small, build our confidence, and soon enough, Python will become second nature to us."
+   - I understand that learning a new language might seem challenging, especially with the competition season approaching. However, with a focused plan and collaborative effort, I’m confident we can make the transition in three months. We’ll start small, build our confidence, and soon enough, Python will become second nature to us.
 
-**Call to Action:**
-- "Let’s embrace this opportunity to learn, grow, and innovate. By transitioning to Python, we’re not just changing languages—we’re enhancing our ability to think creatively, solve problems efficiently, and push the boundaries of what our robot can do. Together, we can make this a successful and exciting transition."
+**Conclusion:**
+- Let’s embrace this opportunity to learn, grow, and innovate. By transitioning to Python, we’re not just changing languages—we’re enhancing our ability to think creatively, solve problems efficiently, and push the boundaries of what our robot can do. Together, we can make this a successful and exciting transition.
 
 ---
 
@@ -79,7 +80,7 @@ Transitioning to a new programming language can be daunting, especially with a t
 - **Regular Check-ins:**
   - Hold weekly meetings to address challenges, provide additional training, and adjust the plan as needed.
 - **Resource Sharing:**
-  - Create a shared repository of Python resources, including code snippets, tutorials, and documentation, for team members to access anytime.
+  - Develop this repository of Python resources, including code snippets, tutorials, and documentation, for team members to access anytime.
 - **Encouragement and Recognition:**
   - Acknowledge the efforts of team members who are embracing the change and making progress, fostering a positive and supportive environment.
 

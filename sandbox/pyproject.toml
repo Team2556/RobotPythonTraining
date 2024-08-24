@@ -3,15 +3,15 @@ requires = ["setuptools", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "TEAM2556-2025-REEFScape"
+name = "TEAM2556-Python"
 version = "0.1.0"
 description = "FRC Robot Project using Python, PyRobot, and WPILib"
 authors = [
-    { name="Team2556", email="team@example.com" }
+    { name="Team2556", email="team2556@gmail.com" }
 ]
 dependencies = [
-    # "wpilib", #really need?
-    # "robotpy"
+    "wpilib", #really need?
+    "robotpy"
 ]
 
 [tool.pytest.ini_options]
@@ -43,7 +43,7 @@ robotpy_extras = [
 # Other pip packages to install
 requires = [
     'numpy',
-    'scipy'
+    #'scipy'
     # 'pynetworktables',
     # 'pyfrc',
     # 'robotpy-hal-sim',

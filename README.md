@@ -2,22 +2,24 @@
  Sandbox for training -- transition to python
 
 
- # FRC Robot Project
+ # Roaches Transition to Python
+Why? Well read this: [switch to python](why_switch-python.md)
 
-This repository contains the resources and code for our FRC robot transition from Java to Python..
+This repository contains the resources and code we use to initally transition to Python and to train future Raoches.
+
+The 2025 REEFScape season repository (for competiton code) is located at [RobotPython2025](https://github.com/Team2556/RobotPython2025) #TODO: update the repo name and this link once team is over thier initial freakout
+
+# Where togo, What to do
+- Get [GitHUB](https://github.com/) account and join the [FRC Team 2556](https://github.com/Team2556) organization
+- Review the [Python Training Plan](training/traning-plan.md) overview.
+- Review #TODO: project, issues, milestones, blahblah.md, wiki ?... for current training activities
+- Python is a tool to turn what you are thinking into action, learn how to think: [Systems Engineering exercize](training/challenges/SE-training.md)
+- Setup your computer to use python and this repo (see below)
 
 
-!!NEED TO EDIT Below.................-------------------------------------............................................
-Link to reasoning for [switch to python](why_switch-python.md)
+----
 
-link to [RobotPython2025 Repo](https://github.com/Team2556/RobotPython2025
-)
-
-link to [Python Training](training/traning-plan.md) plan
-
-link to [Systems Engineering exercize](training/challenges/SE-training.md)
-
-## Setup
+## Setup a clone of this repo
 
 0. Create a python based profile in your VS Code: [optional profile file](RobotPy.code-profile)
 
@@ -38,10 +40,11 @@ link to [Systems Engineering exercize](training/challenges/SE-training.md)
     venv\Scripts\activate
     On macOS/Linux: 
     source venv/bin/activate
+#TODO: NEED TO EDIT Below.................-------------------------------------.......................................
+<!-- 
 4. ??automatic for newcomer?? Install the dependencies:
     ```sh
     pip install . #the dot references your current directory
-<!-- 
 
 5. initialize robotpy
     ```sh
@@ -61,36 +64,42 @@ link to [Systems Engineering exercize](training/challenges/SE-training.md)
     python src/robot.py
 
 # Repository Structure
-- We plan to use the following structure.
-    <!-- ├── src/
+- We plan to use the following structure; It is described more in [the Training Plan](training/traning-plan.md)
+    <!-- 
     │   ├── ?maybe? __init__.py
     │   ├── robot.py
     ├── ?maybe? config/
     │   └── config.yaml
     -->
     ```sh
-    FRC-Robot-Project/
-    ├── robot.py
-    ├── constants.py
-    ├── subsystems/
-    │   ├── __init__.py
-    │   └── example_subsystem.py 
-    ├── commands/
-    │   ├── __init__.py
-    │   └── example_command.py 
-    ├── autonomous/
-    │   ├── __init__.py
-    │   └── example_command.py 
-    ├── pathplanner/deploy/pathplanner/
-    │   ├── autos
-    │   └── paths
-    ├── tests/
-    │   ├── __init__.py
-    │   └── test_robot.py
+    RobotPython/
+    ├── sandbox/
+    |   ├── pyproject.toml
+    │   ├── src/
+    |   ├── robot.py
+    |   ├── constants.py
+    |   ├── subsystems/
+    |   │   ├── __init__.py
+    |   │   └── example_subsystem.py 
+    |   ├── commands/
+    |   │   ├── __init__.py
+    |   │   └── example_command.py 
+    |   ├── autonomous/
+    |   │   ├── __init__.py
+    |   │   └── example_command.py 
+    |   ├── pathplanner/deploy/pathplanner/
+    |   │   ├── autos
+    |   │   └── paths
+    |   ├── tests/
+    |   │   ├── __init__.py
+    |   │   └── test_robot.py
+    ├── docs/
+    ├── resources/
+    ├── training/
     ├── .gitignore
     ├── README.md
-    ├── pyproject.toml
-    └── venv/
+    
+    
 
 # Other Resources
 - Download python (3.12.5): https://www.python.org/downloads/windows/
@@ -117,7 +126,7 @@ In the VS Code Extensions sidbar, these codes should help you find usefull exten
    ```sh
    git clone https://github.com/Team2556/RobotPython2025.git
    cd RobotPython2025
-2. Create a vertual environment (from a terminal; in the repo directry on your pc)
+2. Create a vertual environment (from a terminal in VS Code; in the repo/sandbox directry on pc)
     ```sh
     python -m venv venv
 3. Activate the virtual environment:
@@ -126,7 +135,7 @@ In the VS Code Extensions sidbar, these codes should help you find usefull exten
     venv\Scripts\activate
     On macOS/Linux: 
     source venv/bin/activate
-<!-- 4. Install the dependencies:
+4. Install the dependencies:
     ```sh
     pip install . #the dot references your current directory -->
 
@@ -134,17 +143,17 @@ In the VS Code Extensions sidbar, these codes should help you find usefull exten
     ```sh
     py -m robotpy init
 
-<!-- 6. Create folders named 'src/subsytems' and 'tests'
+6. Created folders named 'src/subsytems' and 'tests' etc..
     ```sh
     mkdir src/subsytems
-    mkdir tests
+    mkdir src/tests
 
 7. move robot.py file created by initilization to 'src' folder
-    move robot2.py src\ -->
+    move robot.py src\ 
 
-6. Run the robotpy sync to get the RoboRIO python
+6. Ran the robotpy sync to get the RoboRIO python
     ```sh 
     py -m robotpy sync
-8. Run the robot code:
+8. Ran the robot code:
     ```sh
     python src/robot.py

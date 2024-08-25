@@ -7,13 +7,13 @@ Why? Well read this: [switch to python](why_switch-python.md)
 
 This repository contains the resources and code we use to initally transition to Python and to train future Raoches.
 
-The 2025 REEFScape season repository (for competiton code) is located at [RobotPython2025](https://github.com/Team2556/RobotPython2025) #TODO: update the repo name and this link once team is over thier initial freakout
+The 2025 REEFScape season repository (for competiton code) is located at [RobotPython2025](https://github.com/Team2556/RobotPython2025) #TODO: update the repo name and this link once team is over their initial freakout
 
 # Where to go, What to do
 - Get [GitHUB](https://github.com/) account and join the [FRC Team 2556](https://github.com/Team2556) organization
 - Review the [Python Training Plan](training/traning-plan.md) overview.
 - Review #TODO: project, issues, milestones, blahblah.md, wiki ?... for current training activities
-- Python is a tool to turn what you are thinking into action, learn how to think: [Systems Engineering exercize](training/challenges/SE-training.md)
+- Python is a tool to turn what you are thinking into action, learn how to think: [Systems Engineering exercise](training/challenges/SE-training.md)
 - Setup your computer to use python and this repo (see below)
 
 

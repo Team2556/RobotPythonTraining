@@ -35,6 +35,7 @@
    - **Key Differences from Java:**
      - Emphasize Python’s use of indentation instead of braces `{}`.
      - Dynamic typing versus Java’s static typing.
+     - type hinting ans static checkers
 
    **Resources:**
    - Online courses such as Codecademy’s Python track or Coursera’s Python for Everybody.
@@ -42,6 +43,7 @@
    - Use the `/training/basics/` directory to store example scripts and exercises.
 
    **Exercises:**
+   - import this
    - Basic calculations and string manipulations.
    - Creating simple loops (e.g., counting, summing numbers).
    - Writing and calling basic functions.

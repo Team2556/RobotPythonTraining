@@ -1,5 +1,5 @@
 # description 
-Creating a simple exercise to teach systems engineering concepts can be highly effective. Let's use the example of "making a sandwich" as it's relatable and easy to break down into components and subsystems. Here's how you might structure the exercise:
+Creating a simple exercise to teach systems engineering concepts can be highly effective. Let's use the example of "making a sandwich" as it's relatable and easy to break down into components and subsystems. 
 
 ### **Systems Engineering Exercise: "Making a Sandwich"**
 
@@ -100,7 +100,7 @@ This example introduces more complexity in terms of safety and procedure, provid
 
 # training script
 
-### **Facilitator Script: Systems Engineering Training - "Making a Sandwich"**
+### **Script: Systems Engineering Training - "Making a Sandwich"**
 
 ---
 

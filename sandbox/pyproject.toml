@@ -11,7 +11,8 @@ authors = [
 ]
 dependencies = [
     "wpilib", #really need?
-    "robotpy"
+    "robotpy",
+    "mypy"
 ]
 
 [tool.pytest.ini_options]

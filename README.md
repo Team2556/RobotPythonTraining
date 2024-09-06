@@ -32,43 +32,48 @@ The 2025 REEFScape season repository (for competiton code) is located at [RobotP
 
 2. Clone the repository:
    ```sh
-   git clone https://github.com/Team2556/RobotPython.git
-   cd RobotPython
-3. ??automatic for newcomer?? Activate the virtual environment:
+   git clone https://github.com/Team2556/RobotPythonTraining.git
+   cd sandbox\
+   ```
+   This should put you in the sandbox folder in your terminal on VS Code. There should be a \src\ folder and a pyproject.toml file on the **main** branch. We don't want the main branch changed yet, bruh.
+
+1. Create a branch named with your name and publish that to GitHub (origin)
+![alt text](image.png)
+   
+1. Create a virtual environment (from a terminal in VS Code; in the repo/sandbox directry on pc)
+    ```sh
+    python -m venv venv
+1. Activate the virtual environment:
     ```sh
     On Windows: 
     venv\Scripts\activate
     On macOS/Linux: 
     source venv/bin/activate
-#TODO: NEED TO EDIT Below.................-------------------------------------.......................................
-<!-- 
-4. ??automatic for newcomer?? Install the dependencies:
+1. Install the dependencies:
     ```sh
-    pip install . #the dot references your current directory
+    pip install . 
+    ```
+    The dot (.) references your current directory. From that directory it will use the pyproject.toml to install the proper libraries.
 
-5. initialize robotpy
-    ```sh
+    VS Code will often prompt you as to if you want to use this venv as your working environment (in the big windows, not just the terminal you activated in the previous step).
 
- 3. Create folders named 'subsytems' and 'tests'
-    ```sh
-    mkdir subsytems
-    mkdir tests
-    py -3 -m robotpy init -->
-<!--
+     [ ] TODO: See what most students seeing and add helper image to get to working in correct venv
+ 
+1. 6. Run the robotpy sync to get the RoboRIO python
+    ```sh 
+    py -m robotpy sync
 
-7. move robot.py file created by initilization to 'src' folder
-    move robot2.py src\ -->
-
-4. Run the robot code:
+1. Run the robot code:
     ```sh
     python src/robot.py
+
 
 #### **Repository Layout:**
 
 1. **Root Directory:**
    - **README.md:**  
      - A comprehensive overview of the project, including a brief introduction, instructions on how to get started, and links to key resources (like Python tutorials or RobotPy documentation).
-   - **CONTRIBUTING.md:**  
+   - **CONTRIBUTING.md:**  [ ] TODO...
      - Guidelines for contributing to the repository, including coding standards, commit message conventions, and pull request processes.
    - **.gitignore:**  
      - Specify files and directories to be ignored by Git (e.g., build artifacts, virtual environments).
@@ -76,6 +81,7 @@ The 2025 REEFScape season repository (for competiton code) is located at [RobotP
 2. **Directory Structure:**
 
    - **`/docs/`:**  
+     - 'docs' may use a WIKI instead
      - Documentation files (e.g., installation guides, how-to documents, explanation of the code architecture).
      - Consider adding subfolders for `training_materials`, `API_docs`, and `design_docs`.
 
@@ -87,7 +93,9 @@ The 2025 REEFScape season repository (for competiton code) is located at [RobotP
      - **`/solutions/`:** Example solutions to the challenges.
 
    - **`/sandbox/`:**  
-     - The main source code directory for the robot's Python code, organized by function. 
+     - A subdirectory that is meant to feel like a robot code repo.
+     - **`/src/`:**  
+     The main source code directory for the robot's Python code, organized by function. 
      - **Top-Level Directories:**
        - **`commands/`**: Houses command logic that directs subsystems.
        - **`components/`**: Stores smaller, reusable pieces of code that don't belong to a specific subsystem but are used across multiple areas (e.g., custom sensors, utility functions).
@@ -96,7 +104,7 @@ The 2025 REEFScape season repository (for competiton code) is located at [RobotP
        - **`pathplanner/`**: Contains path planning logic, trajectory generation, and related code.
        - **Example Layout:**
          ```
-         /sandbox/
+         /sandbox/src/
          ├── commands/
          │   ├── drive_command.py
          │   ├── shoot_command.py
@@ -119,28 +127,23 @@ The 2025 REEFScape season repository (for competiton code) is located at [RobotP
          ```
      - **`/tests/`:** Unit tests for each component and subsystem. Encourage test-driven development (TDD) where feasible.
 
-   - **`/scripts/`:**
-     - Utility scripts for common tasks (e.g., deploying code to the robot, running simulations).
-
-   - **`/resources/`:**
-     - Diagrams, flowcharts, and other non-code assets that are useful for understanding the robot's design and function.
 
 #### **Version Control Practices:**
 
 - **Branches:**
   - **`main` Branch:**  
-    - The stable branch that contains tested and competition-ready code.
-  - **`dev` Branch:**  
-    - The branch where active development happens. All features and changes are merged here first.
-  - **Feature Branches:**  
-    - Create separate branches for new features, e.g., `feature/drivetrain-improvements`. Once a feature is complete, it should be merged into `dev` after code review.
+    - The stable branch that contains training resources ready for a new user to branch from and start from the ground up.
+  - **`your_name_here` Branch:**  
+    - Branches named after the students where active training happens. All features and changes are merged here.
+  - **Colab Branches:**  
+    - Create separate branches for experimenting with collaboration.
 
 - **Pull Requests (PRs):**
-  - Require team members to create PRs when merging code from feature branches to `dev` or `dev` to `main`. 
+  - Require team members to create PRs when merging code in the feature branches. 
   - Use PRs for code reviews, where other team members can comment and suggest improvements.
 
 - **Issues and Tasks:**
-  - Use GitHub Issues to track bugs, feature requests, and tasks. Label them accordingly (e.g., `bug`, `enhancement`, `documentation`).
+  - Use GitHub Issues to track bugs, feature requests, and tasks. Label them accordingly (e.g., `bug`, `enhancement`, `documentation`). # [] TODO: update
   - Assign team members to issues based on their skills and areas they want to develop.
   
 # Other Resources

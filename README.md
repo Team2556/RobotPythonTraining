@@ -163,7 +163,7 @@ In the VS Code Extensions sidbar, these codes should help you find usefull exten
 - ms-python.black-formatter
 - njpwerner.autodocstring
 - tamasfe.even-better-toml
-- 
+- donjayamanne.python-environment-manager
 
 ## ORIGINAL Setup (FYI)
 

@@ -1,9 +1,10 @@
 import wpilib
-from wpilib.command2 import Command, CommandGroup, Scheduler
+import robotpy
+# from commands import  Scheduler, DriveWithJoystick, ShiftGear, ShootShirt, AimCannon
+#Command, CommandGroup,
 from oi import OI
 from subsystems import DriveTrain, GearShifter, AirCannon, CannonActuator
-from commands import DriveWithJoystick, ShiftGear, ShootShirt, AimCannon
-
+import numpy as np
 # Import the necessary libraries
 
 # Create the robot class

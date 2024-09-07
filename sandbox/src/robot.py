@@ -1,63 +1,73 @@
+#!/usr/bin/env python3
+#
+# Copyright (c) FIRST and other WPILib contributors.
+# Open Source Software; you can modify and/or share it under the terms of
+# the WPILib BSD license file in the root directory of this project.
+#
+
+import typing
+
 import wpilib
-import robotpy
-# from commands import  Scheduler, DriveWithJoystick, ShiftGear, ShootShirt, AimCannon
-#Command, CommandGroup,
-from oi import OI
-from subsystems import DriveTrain, GearShifter, AirCannon, CannonActuator
-import numpy as np
-# Import the necessary libraries
+import commands2
+import commands2.cmd
 
-# Create the robot class
-class MyRobot(wpilib.TimedRobot):
-    def robotInit(self):
-        # Create the subsystem instances
-        self.drivetrain = DriveTrain()
-        self.gearshifter = GearShifter()
-        self.aircannon = AirCannon()
-        self.cannonactuator = CannonActuator()
+import robotcontainer
 
-        # Create the OI instance
-        self.oi = OI()
+"""
+The VM is configured to automatically run this class, and to call the functions corresponding to
+each mode, as described in the TimedRobot documentation. If you change the name of this class or
+the package after creating this project, you must also update the build.gradle file in the
+project.
+"""
 
-        # Create the commands
-        self.driveWithJoystick = DriveWithJoystick(self.drivetrain, self.oi)
-        self.shiftGear = ShiftGear(self.gearshifter, self.oi)
-        self.shootShirt = ShootShirt(self.aircannon, self.oi)
-        self.aimCannon = AimCannon(self.cannonactuator, self.oi)
 
-        # Set the default command for the subsystems
-        self.drivetrain.setDefaultCommand(self.driveWithJoystick)
-        self.gearshifter.setDefaultCommand(self.shiftGear)
-        self.aircannon.setDefaultCommand(self.shootShirt)
-        self.cannonactuator.setDefaultCommand(self.aimCannon)
+class MyRobot(commands2.TimedCommandRobot):
+    """
+    Command v2 robots are encouraged to inherit from TimedCommandRobot, which
+    has an implementation of robotPeriodic which runs the scheduler for you
+    """
 
-    def autonomousInit(self):
-        # Start the autonomous command(s)
-        self.autonomousCommand = CommandGroup()
-        self.autonomousCommand.addSequential(Command())
-        self.autonomousCommand.start()
+    def robotInit(self) -> None:
+        """
+        This function is run when the robot is first started up and should be used for any
+        initialization code.
+        """
+        self.autonomousCommand: typing.Optional[commands2.Command] = None
 
-    def autonomousPeriodic(self):
-        # Run the scheduler for the autonomous command(s)
-        Scheduler.getInstance().run()
+        # Instantiate our RobotContainer.  This will perform all our button bindings, and put our
+        # autonomous chooser on the dashboard.
+        self.container = robotcontainer.RobotContainer()
 
-    def teleopInit(self):
-        # Cancel any running autonomous command(s)
+    def disabledInit(self) -> None:
+        """This function is called once each time the robot enters Disabled mode."""
+
+    def disabledPeriodic(self) -> None:
+        """This function is called periodically when disabled"""
+
+    def autonomousInit(self) -> None:
+        """This autonomous runs the autonomous command selected by your RobotContainer class."""
+        self.autonomousCommand = self.container.getAutonomousCommand()
+
+        # schedule the autonomous command (example)
+        if self.autonomousCommand is not None:
+            self.autonomousCommand.schedule()
+        else:
+            print("no auto command?")
+
+    def autonomousPeriodic(self) -> None:
+        """This function is called periodically during autonomous"""
+
+    def teleopInit(self) -> None:
+        # This makes sure that the autonomous stops running when
+        # teleop starts running. If you want the autonomous to
+        # continue until interrupted by another command, remove
+        # this line or comment it out.
         if self.autonomousCommand is not None:
             self.autonomousCommand.cancel()
 
-    def teleopPeriodic(self):
-        # Run the scheduler for the teleop command(s)
-        Scheduler.getInstance().run()
+    def teleopPeriodic(self) -> None:
+        """This function is called periodically during operator control"""
 
-    def testInit(self):
-        # Start the test command(s)
-        self.testCommand = Command()
-        self.testCommand.start()
-
-    def testPeriodic(self):
-        # Run the scheduler for the test command(s)
-        Scheduler.getInstance().run()
-
-if __name__ == "__main__":
-    wpilib.run(MyRobot)
+    def testInit(self) -> None:
+        # Cancels all running commands at the start of test mode
+        commands2.CommandScheduler.getInstance().cancelAll()

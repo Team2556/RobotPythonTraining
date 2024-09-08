@@ -5,24 +5,37 @@
   "MainWindow": {
     "GLOBAL": {
       "fps": "120",
-      "height": "900",
+      "height": "234",
       "maximized": "0",
       "style": "0",
       "userScale": "2",
-      "width": "1600",
-      "xpos": "-1",
-      "ypos": "-1"
+      "width": "1256",
+      "xpos": "24",
+      "ypos": "64"
+    }
+  },
+  "Table": {
+    "0x965B9C9E,2": {
+      "Column 0  Width": "160",
+      "Column 1  Weight": "1.0000",
+      "RefScale": "16"
+    },
+    "0xE56EC1C2,4": {
+      "Column 0  Weight": "1.0000",
+      "Column 1  Weight": "1.0000",
+      "Column 2  Weight": "1.0000",
+      "Column 3  Weight": "1.0000"
     }
   },
   "Window": {
     "###FMS": {
       "Collapsed": "0",
-      "Pos": "6,675",
-      "Size": "336,158"
+      "Pos": "6,206",
+      "Size": "216,206"
     },
     "###Joysticks": {
       "Collapsed": "0",
-      "Pos": "312,581",
+      "Pos": "241,206",
       "Size": "976,179"
     },
     "###Keyboard 0 Settings": {
@@ -42,23 +55,43 @@
     },
     "###NetworkTables": {
       "Collapsed": "0",
-      "Pos": "312,346",
-      "Size": "937,231"
+      "Pos": "249,206",
+      "Size": "937,461"
     },
     "###NetworkTables Info": {
       "Collapsed": "0",
-      "Pos": "312,162",
-      "Size": "937,181"
+      "Pos": "246,21",
+      "Size": "937,326"
     },
     "###Other Devices": {
       "Collapsed": "0",
-      "Pos": "1281,25",
+      "Pos": "1224,25",
       "Size": "312,868"
+    },
+    "###Plot <0>": {
+      "Collapsed": "0",
+      "Pos": "60,60",
+      "Size": "700,400"
+    },
+    "###Plot <1>": {
+      "Collapsed": "0",
+      "Pos": "60,60",
+      "Size": "700,400"
+    },
+    "###Plot <2>": {
+      "Collapsed": "0",
+      "Pos": "60,60",
+      "Size": "700,400"
+    },
+    "###Plot <3>": {
+      "Collapsed": "0",
+      "Pos": "60,60",
+      "Size": "700,400"
     },
     "###System Joysticks": {
       "Collapsed": "0",
-      "Pos": "6,437",
-      "Size": "232,254"
+      "Pos": "6,206",
+      "Size": "246,206"
     },
     "###Timing": {
       "Collapsed": "0",

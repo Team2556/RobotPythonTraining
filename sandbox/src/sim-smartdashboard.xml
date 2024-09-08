@@ -1,0 +1,68 @@
+<xml version="1.0">
+<dashboard>
+	<widget field="Drive Distance" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="2" y="198"/>
+	</widget>
+	<widget field="Sim- Right Encoder" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="636"/>
+	</widget>
+	<widget field="Sim- Left Encoder" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="616"/>
+	</widget>
+	<widget field="Sim- Right Motor Speed" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="596"/>
+	</widget>
+	<widget field="Sim- Left Motor Speed" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="2" y="572"/>
+	</widget>
+	<widget field="Drive 1ft" type="Command" class="edu.wpi.first.smartdashboard.gui.elements.Command">
+		<location x="161" y="97"/>
+	</widget>
+	<widget field="Charge and Shoot" type="Command" class="edu.wpi.first.smartdashboard.gui.elements.Command">
+		<location x="120" y="75"/>
+	</widget>
+	<widget field="Scheduler" type="Scheduler" class="edu.wpi.first.smartdashboard.gui.elements.Scheduler">
+		<location x="291" y="62"/>
+	</widget>
+	<widget field="FireSubsystem" type="Subsystem" class="edu.wpi.first.smartdashboard.gui.elements.Subsystem">
+		<location x="5" y="314"/>
+		<width>253</width>
+	</widget>
+	<widget field="CannonChargeSubsystem" type="Subsystem" class="edu.wpi.first.smartdashboard.gui.elements.Subsystem">
+		<location x="1" y="286"/>
+		<width>251</width>
+	</widget>
+	<widget field="DriveSubsystem" type="Subsystem" class="edu.wpi.first.smartdashboard.gui.elements.Subsystem">
+		<location x="3" y="261"/>
+		<width>251</width>
+	</widget>
+	<widget field="Drive Status" type="String" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="176"/>
+		<width>329</width>
+	</widget>
+	<widget field="Safe&Arm Status" type="String" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="156"/>
+		<width>329</width>
+	</widget>
+	<widget field="Cannon Status" type="String" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="136"/>
+		<width>330</width>
+		<height>19</height>
+	</widget>
+	<widget field="SendableChooser[0]" type="String Chooser" class="edu.wpi.first.smartdashboard.gui.elements.Chooser">
+		<location x="0" y="73"/>
+	</widget>
+	<widget field="Bridge Angle" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="53"/>
+	</widget>
+	<widget field="Bridge Limit" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="33"/>
+	</widget>
+	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.ConnectionIndicator">
+		<location x="0" y="0"/>
+	</static-widget>
+</dashboard>
+<live-window>
+</live-window>
+	<hidden field="Field"/>
+</xml>

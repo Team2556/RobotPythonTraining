@@ -10,8 +10,10 @@ import typing
 import wpilib
 import commands2
 import commands2.cmd
-
+from constants import (AutoConstants, CannonConstants, DriveConstants, ShooterConstants, RobotArmStates)
 import robotcontainer
+from wpilib import SmartDashboard, Field2d
+from commands2 import CommandScheduler
 
 """
 The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -33,6 +35,11 @@ class MyRobot(commands2.TimedCommandRobot):
         initialization code.
         """
         self.autonomousCommand: typing.Optional[commands2.Command] = None
+
+        SmartDashboard.putData(CommandScheduler.getInstance())
+        # doing this in the container... but should it be here ? self.ArmState = RobotArmStates.DISARMED
+        self.field = Field2d()
+        SmartDashboard.putData("Field", self.field)
 
         # Instantiate our RobotContainer.  This will perform all our button bindings, and put our
         # autonomous chooser on the dashboard.
@@ -56,6 +63,7 @@ class MyRobot(commands2.TimedCommandRobot):
 
     def autonomousPeriodic(self) -> None:
         """This function is called periodically during autonomous"""
+        # self.field.setRobotPose(self.odometry.getPose())
 
     def teleopInit(self) -> None:
         # This makes sure that the autonomous stops running when
@@ -67,6 +75,7 @@ class MyRobot(commands2.TimedCommandRobot):
 
     def teleopPeriodic(self) -> None:
         """This function is called periodically during operator control"""
+        # self.field.setRobotPose(self.odometry.getPose())
 
     def testInit(self) -> None:
         # Cancels all running commands at the start of test mode

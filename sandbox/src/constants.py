@@ -11,6 +11,7 @@ changes.
 """
 
 import math
+from enum import IntEnum, unique
 
 
 class DriveConstants:
@@ -61,7 +62,8 @@ class ShooterConstants:
     kFireSolenoidPort = 6
 
 class CannonConstants:
-    kCannonMotorPort = 6
+    # kCannonMotorPort = 6
+    kCannonChargeSolenoidPort = 9
     kEncoderPorts = (6, 7)
     kEncoderReversed = False
     kEncoderCPR = 1024
@@ -72,9 +74,16 @@ class CannonConstants:
     kLimitSwitchTopPort = 8
     kLimitSwitchBottomPort = 9
 
+@unique
+class RobotArmStates(IntEnum):
+    ARMING = 0
+    ARMED = 1
+    DISARMED = 2
+
 class AutoConstants:
     kAutoTimeoutSeconds = 12
     kAutoShootTimeSeconds = 7
+    kAutoChargeTimeSeconds = 3
 
 
 class OIConstants:

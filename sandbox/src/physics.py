@@ -25,11 +25,14 @@ from wpilib.simulation import ( EncoderSim,
                             #    ADXL345_I2C, ADXL362
                                )
 from wpilib import SmartDashboard, Field2d
+import wpimath
 
 from pyfrc.physics.core import PhysicsInterface
 from pyfrc.physics import motor_cfgs, tankmodel
 from pyfrc.physics.units import units
 from wpilib import RobotController
+import wpimath.system
+import wpimath.system.plant
 
 import constants
 
@@ -39,6 +42,8 @@ if typing.TYPE_CHECKING:
     from robot import MyRobot
     from robotcontainer import RobotContainer
 
+# there has to be a beter way to do this
+from subsystems.cannonsubsystem import CannonLift
 
 class PhysicsEngine:
     """
@@ -55,12 +60,12 @@ class PhysicsEngine:
         SmartDashboard.putData("Field", self.field)
 
         self.physics_controller = physics_controller
-        robotCont = robot.container
+        self.robotCont = robot.container
 
         # Motors
-        self.leftMotors = PWMSim(robotCont.robotDrive.leftMotorLeader.getChannel())
+        self.leftMotors = PWMSim(self.robotCont.robotDrive.leftMotorLeader.getChannel())
         # self.leftMotors = wpilib.simulation.PWMSim(2)
-        self.rightMotors = PWMSim(robotCont.robotDrive.rightMotorLeader.getChannel())
+        self.rightMotors = PWMSim(self.robotCont.robotDrive.rightMotorLeader.getChannel())
         # self.rightMotors = wpilib.simulation.PWMSim(4)
 
         # Encoders
@@ -85,6 +90,28 @@ class PhysicsEngine:
             6 * units.inch,                     # wheel diameter
         )
         # fmt: on
+
+        # Cannon Lift to aim
+        # The arm gearbox represents a gearbox containing two Vex 775pro motors.
+        CannonLiftConstants = constants.CannonLiftConstants
+        self.armGearbox = wpimath.system.plant.DCMotor.vex775Pro(2)
+        # Simulation classes help us simulate what's going on, including gravity.
+        # This arm sim represents an arm that can travel from -75 degrees (rotated down front)
+        # to 255 degrees (rotated down in the back).
+        self.armSim = wpilib.simulation.SingleJointedArmSim(
+            self.armGearbox,
+            CannonLiftConstants.kArmReduction,
+            wpilib.simulation.SingleJointedArmSim.estimateMOI(
+                CannonLiftConstants.kArmLength, CannonLiftConstants.kArmMass
+            ),
+            CannonLiftConstants.kArmLength,
+            CannonLiftConstants.kMinAngleRads,
+            CannonLiftConstants.kMaxAngleRads,
+            True,
+            # Add noise with a std-dev of 1 tick
+            CannonLiftConstants.kArmEncoderDistPerPulse,
+        )
+
 
     def update_sim(self, now: float, tm_diff: float) -> None:
         """
@@ -121,6 +148,12 @@ class PhysicsEngine:
         self.rightEncoder.setDistance(r_encoder)
         SmartDashboard.putNumber("Sim- Left Encoder", l_encoder)
         SmartDashboard.putNumber("Sim- Right Encoder", r_encoder)
+
+        # Simulate the cannon lift
+        self.encoderSim = wpilib.simulation.EncoderSim( self.robotCont.lift.encoder )
+        #CannonLift.encoder() )
+        self.motorSim = wpilib.simulation.PWMSim(constants.CannonLiftConstants.kMotorPort)
+
 
         # Update the gyro simulation
         # -> FRC gyros are positive clockwise, but the returned pose is positive

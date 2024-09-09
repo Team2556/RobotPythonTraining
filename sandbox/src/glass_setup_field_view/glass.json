@@ -2,6 +2,7 @@
   "NetworkTables": {
     "types": {
       "/FMSInfo": "FMSInfo",
+      "/SmartDashboard/Cannon": "Mechanism2d",
       "/SmartDashboard/CannonChargeSubsystem": "Subsystem",
       "/SmartDashboard/Charge and Shoot": "Command",
       "/SmartDashboard/Drive 1ft": "Command",
@@ -12,6 +13,11 @@
       "/SmartDashboard/SendableChooser[0]": "String Chooser"
     },
     "windows": {
+      "/SmartDashboard/Cannon": {
+        "window": {
+          "visible": true
+        }
+      },
       "/SmartDashboard/Field": {
         "Robot": {
           "arrowSize": 54,

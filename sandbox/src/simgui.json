@@ -2,6 +2,7 @@
   "NTProvider": {
     "types": {
       "/FMSInfo": "FMSInfo",
+      "/SmartDashboard/Cannon": "Mechanism2d",
       "/SmartDashboard/CannonChargeSubsystem": "Subsystem",
       "/SmartDashboard/Charge and Shoot": "Command",
       "/SmartDashboard/Drive 1ft": "Command",

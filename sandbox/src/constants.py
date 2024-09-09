@@ -61,12 +61,52 @@ class ShooterConstants:
 
     kFireSolenoidPort = 6
 
+
+class CannonLiftConstants:
+    kMotorPort = 7
+    kEncoderPorts = (6, 7)
+    kEncoderReversed = False
+    kEncoderCPR = 1024
+    kArmEncoderDistPerPulse = 360 / kEncoderCPR
+    kArmPositionKey = "Cannon Position"
+    kArmPKey = "CannonP"
+
+    kDefaultArmKp = 1
+    kDefaultArmSetpointDegrees = 90
+
+
+    kSVolts = 0.05
+    kVVoltSecondsPerRotation = 12.0 / 1.0
+
+    kLiftTargetRPS = 1
+    kLiftToleranceRPS = 0.1
+
+    kLimitSwitchTopPort = 8
+    kLimitSwitchBottomPort = 9
+    # CannonLiftConstants.kArmReduction,
+            # wpilib.simulation.SingleJointedArmSim.estimateMOI(
+            #     CannonLiftConstants.kArmLength, CannonLiftConstants.kArmMass
+            # ),
+            # CannonLiftConstants.kArmLength,
+            # CannonLiftConstants.kMinAngleRads,
+            # CannonLiftConstants.kMaxAngleRads,
+    kArmReduction = 2/1
+    kArmLength = 4
+    kArmMass = 10
+    kMinAngleRads = 15/180
+    kMaxAngleRads = 45/180
+
+
 class CannonConstants:
-    # kCannonMotorPort = 6
+    kCannonMotorPort = 7
     kCannonChargeSolenoidPort = 9
     kEncoderPorts = (6, 7)
     kEncoderReversed = False
     kEncoderCPR = 1024
+
+    kSVolts = 0.05
+    kVVoltSecondsPerRotation = 12.0 / 1.0
+
 
     kCannonTargetRPS = 1
     kCannonToleranceRPS = 0.1

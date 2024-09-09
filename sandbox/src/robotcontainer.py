@@ -8,6 +8,8 @@ import commands2
 import commands2.cmd
 import commands2.button
 from wpilib import SmartDashboard, Field2d
+
+import subsystems.cannonsubsystem
 SmartDashboard.putBoolean("Bridge Limit", False)
 SmartDashboard.putNumber("Bridge Angle", 900)
 
@@ -35,6 +37,15 @@ class RobotContainer:
         SmartDashboard.putData(self.charger)
         self.shooter = subsystems.shootersubsystem.FireSubsystem()
         SmartDashboard.putData(self.shooter)
+        self.lift = subsystems.cannonsubsystem.CannonLift()
+
+        # Smart Dashboard cannon representation
+        self.sdCannonMech = wpilib.Mechanism2d(width=1,height=.1, backgroundColor= wpilib.Color8Bit(wpilib.Color.kAliceBlue))
+        self.sdCannonRoot = self.sdCannonMech.getRoot(name="Cannon", x=.5, y=0.1)
+        self.sdCannonBarrel = self.sdCannonRoot.appendLigament(name="Barrel", length=2, angle=15, color=wpilib.Color8Bit(wpilib.Color.kBlueViolet))
+
+        SmartDashboard.putData("Cannon", self.sdCannonMech)
+
         
 
         #self.sd = ntcore.NetworkTableInstance.getDefault().getTable("SmartDashboard")
@@ -82,6 +93,11 @@ class RobotContainer:
         self.auto_chooser.setDefaultOption("Charge and Shoot", self.Charge_Shoot)
         self.auto_chooser.addOption("Drive 1ft", self.auto_drive_1ft)
         SmartDashboard.putData(self.auto_chooser)
+
+        # the sim starts off moving the robot, so we need to stop it
+        self.robotDrive.arcadeDrive(0,0)
+
+
         def get_auto_command():
             return self.auto_chooser.getSelected()
         

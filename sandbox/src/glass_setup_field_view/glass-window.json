@@ -30,6 +30,11 @@
     }
   },
   "Window": {
+    "###/SmartDashboard/Cannon": {
+      "Collapsed": "0",
+      "Pos": "400,400",
+      "Size": "367,214"
+    },
     "###/SmartDashboard/Field": {
       "Collapsed": "0",
       "Pos": "28,30",

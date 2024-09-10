@@ -70,6 +70,8 @@ class CannonLiftConstants:
     kArmEncoderDistPerPulse = 360 / kEncoderCPR
     kArmPositionKey = "Cannon Position"
     kArmPKey = "CannonP"
+    kArmMaxAngleDegrees = 60
+    kArmMinAngleDegrees = -15
 
     kDefaultArmKp = 1
     kDefaultArmSetpointDegrees = 90

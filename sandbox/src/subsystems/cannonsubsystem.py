@@ -1,5 +1,6 @@
 import wpilib
 import wpimath.controller
+from wpilib import SmartDashboard
 import commands2
 import commands2.cmd
 
@@ -13,19 +14,9 @@ from wpimath import units
 from wpilib.simulation import BatterySim, EncoderSim, RoboRioSim, SingleJointedArmSim
 from constants import CannonLiftConstants
 
-class CannonLift:
+class CannonLift(commands2.Subsystem):
     def __init__(self):
-        # something like this goes in the physics.py file
-        # self.arm = SingleJointedArmSim(constants.CannonConstants.kArmSimModel)
-        # self.arm.setFriction(constants.CannonConstants.kArmFriction)
-        # self.arm.setMass(constants.CannonConstants.kArmMass)
-        # self.arm.setGearing(constants.CannonConstants.kArmGearing)
-        # self.arm.setInertia(constants.CannonConstants.kArmInertia)
-        # self.arm.setVoltage(0)
-        # self.arm.setAngle(constants.CannonConstants.kArmStartingAngle)
-        # self.arm.setVelocity(0)
-        # self.arm.setAcceleration(0)
-        # The P gain for the PID controller that drives this arm.
+        
 
         self.armKp = CannonLiftConstants.kDefaultArmKp
         self.armSetpointDegrees = CannonLiftConstants.kDefaultArmSetpointDegrees
@@ -38,16 +29,47 @@ class CannonLift:
         self.encoder = wpilib.Encoder(
             CannonLiftConstants.kEncoderPorts[0], CannonLiftConstants.kEncoderPorts[1]
         )
+        
+        self.encoder.setDistancePerPulse(CannonLiftConstants.kArmEncoderDistPerPulse)  # in degrees
+        self.encoder.reset()
+        # TODO: create a homing routine
+        self.encoderSim = EncoderSim(self.encoder)
         self.motor = wpilib.PWMSparkMax(CannonLiftConstants.kMotorPort)
 
-        # Subsystem constructor.
-        self.encoder.setDistancePerPulse(CannonLiftConstants.kArmEncoderDistPerPulse)
+        
 
         # Set the Arm position setpoint and P constant to Preferences if the keys don't already exist
         wpilib.Preferences.initDouble(
             CannonLiftConstants.kArmPositionKey, self.armSetpointDegrees
         )
         wpilib.Preferences.initDouble(CannonLiftConstants.kArmPKey, self.armKp)
+
+        self.limitSwitchTop = wpilib.DigitalInput(CannonLiftConstants.kLimitSwitchTopPort) # configure H/W normally open
+        SmartDashboard.putBoolean("Limit Switch Top disengaged", self.limitSwitchTop.get())
+        self.limitSwitchBottom = wpilib.DigitalInput(CannonLiftConstants.kLimitSwitchBottomPort) # configure H/W normally open
+        SmartDashboard.putBoolean("Limit Switch Bottom disengaged", self.limitSwitchBottom.get())
+        
+        SmartDashboard.putString("Cannon Lift Status", f'Cannon Lift Initialized')
+
+    def setMotorSpeed(self, speed: float):
+        # safety gate for normally open limit switches
+        ANGLE= self.encoder.getDistance()
+        SmartDashboard.putNumber("Cannon Lift Angle", ANGLE)
+        if ((ANGLE) > CannonLiftConstants.kArmMaxAngleDegrees or 
+                ANGLE < CannonLiftConstants.kArmMinAngleDegrees):
+            SmartDashboard.putString("Cannon Lift Status", f'Cannon Lift beyond encoder limits at {ANGLE} degrees')
+            self.motor.set(0)
+        elif (AtTOP:=not(self.limitSwitchTop.get()) ) or ( AtBottom:=not(self.limitSwitchBottom.get())):
+            self.motor.set(0)
+            SmartDashboard.putString("Cannon Lift Status", f'Cannon Lift at limit switch {AtTOP=} {AtBottom=}')
+        elif speed== 0:
+            self.motor.set(speed)
+            SmartDashboard.putString("Cannon Lift Status", f'Cannon Lift instructed to be still')
+        else:
+            self.motor.set(speed)
+            
+            SmartDashboard.putString("Cannon Lift Status", f'Cannon Lift Moving at {speed} speed')
+    
 
 
 

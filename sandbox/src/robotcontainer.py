@@ -38,6 +38,7 @@ class RobotContainer:
         self.shooter = subsystems.shootersubsystem.FireSubsystem()
         SmartDashboard.putData(self.shooter)
         self.lift = subsystems.cannonsubsystem.CannonLift()
+        SmartDashboard.putData(self.lift)
 
         # Smart Dashboard cannon representation
         self.sdCannonMech = wpilib.Mechanism2d(width=1,height=.1, backgroundColor= wpilib.Color8Bit(wpilib.Color.kAliceBlue))
@@ -94,6 +95,12 @@ class RobotContainer:
         self.auto_chooser.addOption("Drive 1ft", self.auto_drive_1ft)
         SmartDashboard.putData(self.auto_chooser)
 
+        # command for moving the cannon via the lifter
+        self.cannon_lift_up = commands2.cmd.runOnce(self.lift.setMotorSpeed(.25), self.lift)
+        SmartDashboard.putData("Cannon Lift Up", self.cannon_lift_up)
+        self.cannon_lift_down = commands2.cmd.runOnce(self.lift.setMotorSpeed(-.25), self.lift)
+        SmartDashboard.putData("Cannon Lift Down", self.cannon_lift_down)
+
         # the sim starts off moving the robot, so we need to stop it
         self.robotDrive.arcadeDrive(0,0)
 
@@ -142,6 +149,13 @@ class RobotContainer:
                 self.robotDrive,
             ).andThen(self.robotDrive.getAverageEncoderDistance() )
         )
+        self.lift.setDefaultCommand(
+            commands2.cmd.runOnce(
+                lambda: self.lift.setMotorSpeed(-.10),
+                self.lift
+            ).andThen(self.lift.encoder.getDistance()).andThen(self.lift.encoder.getDistance())
+        )
+        
 
     def configureButtonBindings(self):
         """
@@ -159,6 +173,10 @@ class RobotContainer:
 
         # Turn off the shooter when the 'B' button is pressed
         self.driverController.b().onTrue(self.abortArm)
+
+        self.driverController.povUp().onTrue( self.cannon_lift_up)
+        self.driverController.povDown().onTrue(self.cannon_lift_down)
+        #lambda: self.sdCannonBarrel.setAngle(self.driverController.getRightX().get()*90))
 
         # We can also write them as temporary variables outside the bindings
 

@@ -3,7 +3,10 @@
     "types": {
       "/FMSInfo": "FMSInfo",
       "/SmartDashboard/Cannon": "Mechanism2d",
+      "/SmartDashboard/Cannon Lift Down": "Command",
+      "/SmartDashboard/Cannon Lift Up": "Command",
       "/SmartDashboard/CannonChargeSubsystem": "Subsystem",
+      "/SmartDashboard/CannonLift": "Subsystem",
       "/SmartDashboard/Charge and Shoot": "Command",
       "/SmartDashboard/Drive 1ft": "Command",
       "/SmartDashboard/DriveSubsystem": "Subsystem",

@@ -153,6 +153,17 @@ class PhysicsEngine:
         self.encoderSim = wpilib.simulation.EncoderSim( self.robotCont.lift.encoder )
         #CannonLift.encoder() )
         self.motorSim = wpilib.simulation.PWMSim(constants.CannonLiftConstants.kMotorPort)
+        # something like this goes in the physics.py file
+        # self.arm = SingleJointedArmSim(constants.CannonConstants.kArmSimModel)
+        # self.arm.setFriction(constants.CannonConstants.kArmFriction)
+        # self.arm.setMass(constants.CannonConstants.kArmMass)
+        # self.arm.setGearing(constants.CannonConstants.kArmGearing)
+        # self.arm.setInertia(constants.CannonConstants.kArmInertia)
+        # self.arm.setVoltage(0)
+        # self.arm.setAngle(constants.CannonConstants.kArmStartingAngle)
+        # self.arm.setVelocity(0)
+        # self.arm.setAcceleration(0)
+        # The P gain for the PID controller that drives this arm.
 
 
         # Update the gyro simulation

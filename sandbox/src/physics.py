@@ -63,9 +63,11 @@ class PhysicsEngine:
         self.robotCont = robot.container
 
         # Motors
-        self.leftMotors = PWMSim(self.robotCont.robotDrive.leftMotorLeader.getChannel())
+        self.frontLeftMotor = PWMSim(self.robotCont.robotDrive.frontLeftmotor.getChannel())
+        self.backLeftMotor = PWMSim(self.robotCont.robotDrive.backLeftmotor.getChannel())
         # self.leftMotors = wpilib.simulation.PWMSim(2)
-        self.rightMotors = PWMSim(self.robotCont.robotDrive.rightMotorLeader.getChannel())
+        self.frontRightMotor = PWMSim(self.robotCont.robotDrive.frontRightmotor.getChannel())
+        self.backRightMotor = PWMSim(self.robotCont.robotDrive.backRightmotor.getChannel())
         # self.rightMotors = wpilib.simulation.PWMSim(4)
 
         # Encoders
@@ -124,10 +126,11 @@ class PhysicsEngine:
         """
 
         # Simulate the drivetrain (only front motors used because read should be in sync)
-        leftMotorSpeed = self.leftMotors.getSpeed()
-        SmartDashboard.putNumber("Sim- Left Motor Speed", leftMotorSpeed)
-        rightMotorSpeed = self.rightMotors.getSpeed()
-        SmartDashboard.putNumber("Sim- Right Motor Speed", rightMotorSpeed)
+        # TODO add back motors
+        leftMotorSpeed = self.frontLeftMotor.getSpeed()
+        SmartDashboard.putNumber("Sim- Front Left Motor Speed", leftMotorSpeed)
+        rightMotorSpeed = self.frontRightMotor.getSpeed()
+        SmartDashboard.putNumber("Sim- Front Right Motor Speed", rightMotorSpeed)
 
         transform = self.drivetrain.calculate(leftMotorSpeed, rightMotorSpeed, tm_diff)
 

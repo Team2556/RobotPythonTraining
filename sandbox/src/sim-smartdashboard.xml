@@ -1,5 +1,41 @@
 <xml version="1.0">
 <dashboard>
+	<widget field="Sim- Front Right Motor Speed" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="528"/>
+	</widget>
+	<widget field="Sim- Front Left Motor Speed" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="508"/>
+	</widget>
+	<widget field="Cannon Lift Angle" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="6" y="488"/>
+		<height>19</height>
+	</widget>
+	<widget field="Limit Switch Bottom disengaged" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="1" y="466"/>
+	</widget>
+	<widget field="Limit Switch Top disengaged" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="1" y="446"/>
+	</widget>
+	<widget field="Cannon Lift Status" type="String" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="418"/>
+		<width>400</width>
+	</widget>
+	<widget field="Cannon Lift Down" type="Command" class="edu.wpi.first.smartdashboard.gui.elements.Command">
+		<location x="0" y="386"/>
+	</widget>
+	<widget field="Cannon Lift Up" type="Command" class="edu.wpi.first.smartdashboard.gui.elements.Command">
+		<location x="0" y="354"/>
+	</widget>
+	<widget field="CannonLift" type="Subsystem" class="edu.wpi.first.smartdashboard.gui.elements.Subsystem">
+		<location x="0" y="334"/>
+		<width>259</width>
+	</widget>
+	<widget field="Sim- Position Y" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="238"/>
+	</widget>
+	<widget field="Sim- Position X" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="218"/>
+	</widget>
 	<widget field="Drive Distance" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
 		<location x="2" y="198"/>
 	</widget>
@@ -8,12 +44,6 @@
 	</widget>
 	<widget field="Sim- Left Encoder" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
 		<location x="0" y="616"/>
-	</widget>
-	<widget field="Sim- Right Motor Speed" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="0" y="596"/>
-	</widget>
-	<widget field="Sim- Left Motor Speed" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="2" y="572"/>
 	</widget>
 	<widget field="Drive 1ft" type="Command" class="edu.wpi.first.smartdashboard.gui.elements.Command">
 		<location x="161" y="97"/>
@@ -33,7 +63,7 @@
 		<width>251</width>
 	</widget>
 	<widget field="DriveSubsystem" type="Subsystem" class="edu.wpi.first.smartdashboard.gui.elements.Subsystem">
-		<location x="3" y="261"/>
+		<location x="254" y="238"/>
 		<width>251</width>
 	</widget>
 	<widget field="Drive Status" type="String" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
@@ -65,4 +95,8 @@
 <live-window>
 </live-window>
 	<hidden field="Field"/>
+	<hidden field="Cannon"/>
+	<hidden field="Limit Switch Bottom"/>
+	<hidden field="Limit Switch Top"/>
+	<hidden field="drive type?"/>
 </xml>

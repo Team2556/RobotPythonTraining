@@ -31,8 +31,11 @@ class RobotContainer:
     """
 
     def __init__(self):
+
+        #region Dashboard 
         self.robotDrive = subsystems.drivesubsystem.DriveSubsystem()
         SmartDashboard.putData(self.robotDrive)
+        SmartDashboard.putData("drive type?", self.robotDrive.drive)
         self.charger = subsystems.shootersubsystem.CannonChargeSubsystem()
         SmartDashboard.putData(self.charger)
         self.shooter = subsystems.shootersubsystem.FireSubsystem()
@@ -40,23 +43,20 @@ class RobotContainer:
         self.lift = subsystems.cannonsubsystem.CannonLift()
         SmartDashboard.putData(self.lift)
 
-        # Smart Dashboard cannon representation
+        ## Smart Dashboard cannon representation
         self.sdCannonMech = wpilib.Mechanism2d(width=1,height=.1, backgroundColor= wpilib.Color8Bit(wpilib.Color.kAliceBlue))
         self.sdCannonRoot = self.sdCannonMech.getRoot(name="Cannon", x=.5, y=0.1)
         self.sdCannonBarrel = self.sdCannonRoot.appendLigament(name="Barrel", length=2, angle=15, color=wpilib.Color8Bit(wpilib.Color.kBlueViolet))
 
         SmartDashboard.putData("Cannon", self.sdCannonMech)
+        #endregion
 
         
+        # self.ArmState = RobotArmStates.DISARMED
 
-        #self.sd = ntcore.NetworkTableInstance.getDefault().getTable("SmartDashboard")
-        self.ArmState = RobotArmStates.DISARMED
+    
+        #region prep-tank 
 
-
-        # self.spinUpShooter = commands2.cmd.runOnce(self.shooter.enable, self.shooter)
-        # self.stopShooter = commands2.cmd.runOnce(self.shooter.disable, self.shooter)
-
-        # A routine that recharges to prep-tank 
         self.armCannon = commands2.cmd.sequence(
             # commands2.cmd.runOnce(self.charger.enable, self.charger), # are there safety checks could put in
             commands2.cmd.runOnce(self.charger.charge, self.charger),
@@ -66,14 +66,15 @@ class RobotContainer:
             # self.sd.putString("gameData", f'Cannon Armed: {self.ArmState=}'),
             # commands2.cmd.runOnce(self.arm.disable, self.charger),
         )
-        # SmartDashboard.putData("Arm Cannon", self.armCannon)
 
         # A routine to interrupt arming and abort the arming process
         self.abortArm = commands2.cmd.sequence(
             commands2.cmd.runOnce(self.charger.seal, self.charger),
             commands2.cmd.runOnce(lambda: setattr(self, 'ArmState', RobotArmStates.DISARMED), self.charger),
             ) #
-        # SmartDashboard.putData("Abort Arm", self.abortArm)  
+        #endregion
+
+        #region Autonomous
 
         # An autonomous routine charges and shoots cannon
         self.Charge_Shoot = commands2.cmd.sequence(
@@ -90,23 +91,30 @@ class RobotContainer:
         self.auto_drive_1ft = commands2.cmd.runOnce(self.robotDrive.driveDistance(1.0), self.robotDrive)
         SmartDashboard.putData("Drive 1ft", self.auto_drive_1ft)
 
+        #Smart dashboard chooser for autonomous
         self.auto_chooser = wpilib.SendableChooser()
         self.auto_chooser.setDefaultOption("Charge and Shoot", self.Charge_Shoot)
         self.auto_chooser.addOption("Drive 1ft", self.auto_drive_1ft)
         SmartDashboard.putData(self.auto_chooser)
+        #endregion
+
+        #region Cannon Lift
 
         # command for moving the cannon via the lifter
         self.cannon_lift_up = commands2.cmd.runOnce(self.lift.setMotorSpeed(.25), self.lift)
         SmartDashboard.putData("Cannon Lift Up", self.cannon_lift_up)
         self.cannon_lift_down = commands2.cmd.runOnce(self.lift.setMotorSpeed(-.25), self.lift)
         SmartDashboard.putData("Cannon Lift Down", self.cannon_lift_down)
-
-        # the sim starts off moving the robot, so we need to stop it
-        self.robotDrive.arcadeDrive(0,0)
-
-
+        
         def get_auto_command():
             return self.auto_chooser.getSelected()
+        
+        # the sim starts off moving the robot, so we need to stop it (or get rid of the default comand or add gate check if in teleop)
+        self.robotDrive.driveCartesian(0,0,0)
+
+        #endregion
+
+
         
         #     # Start the command by spinning up the shooter...
         #     commands2.cmd.runOnce(self.shooter.enable, self.shooter),
@@ -129,10 +137,11 @@ class RobotContainer:
         #     ),
         # )
 
+        #region xbox Controller
+
         self.driverController = commands2.button.CommandXboxController(
             constants.OIConstants.kDriverControllerPort
         )
-
         # Configure the button bindings
         self.configureButtonBindings()
 
@@ -142,12 +151,16 @@ class RobotContainer:
             # A split-stick arcade command, with forward/backward controlled by the left
             # hand, and turning controlled by the right.
             commands2.cmd.run(
-                lambda: self.robotDrive.arcadeDrive(
-                    -self.driverController.getLeftY(),
-                    -self.driverController.getLeftX(),
+                lambda: self.robotDrive.driveCartesian(
+                    xSpeed=-self.driverController.getLeftY(),
+                    ySpeed=self.driverController.getLeftX(),
+                    zRotation=self.driverController.getLeftTriggerAxis()
+                # lambda: self.robotDrive.arcadeDrive(
+                #     -self.driverController.getLeftY(),
+                #     self.driverController.getLeftX(),
                 ),
                 self.robotDrive,
-            ).andThen(self.robotDrive.getAverageEncoderDistance() )
+            ).andThen(self.robotDrive.getAverageEncoderDistance() ) # TODO: fix avg encoder for mechanum
         )
         self.lift.setDefaultCommand(
             commands2.cmd.runOnce(
@@ -155,7 +168,7 @@ class RobotContainer:
                 self.lift
             ).andThen(self.lift.encoder.getDistance()).andThen(self.lift.encoder.getDistance())
         )
-        
+        #endregion
 
     def configureButtonBindings(self):
         """
@@ -212,6 +225,7 @@ class RobotContainer:
         #         lambda: self.robotDrive.setMaxOutput(1), self.robotDrive
         #     )
         # )
+        #endregion
 
     def getAutonomousCommand(self) -> commands2.Command:
         """

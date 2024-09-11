@@ -13,7 +13,8 @@
       "/SmartDashboard/Field": "Field2d",
       "/SmartDashboard/FireSubsystem": "Subsystem",
       "/SmartDashboard/Scheduler": "Scheduler",
-      "/SmartDashboard/SendableChooser[0]": "String Chooser"
+      "/SmartDashboard/SendableChooser[0]": "String Chooser",
+      "/SmartDashboard/drive type?": "MecanumDrive"
     }
   },
   "NetworkTables": {

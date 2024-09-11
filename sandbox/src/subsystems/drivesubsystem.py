@@ -6,35 +6,41 @@
 
 import wpilib
 import wpilib.drive
+from wpimath.geometry import Rotation2d, Rotation3d, Translation2d, Translation3d
 import commands2
 from wpilib import SmartDashboard
 
 import constants
 
-
-class DriveSubsystem(commands2.Subsystem):
+class DriveSubsystem(commands2.Subsystem ):
     def __init__(self) -> None:
         """Creates a new DriveSubsystem"""
         super().__init__()
 
         # The motors on the left side of the drive.
-        self.leftMotorLeader = wpilib.Talon(constants.DriveConstants.kLeftMotor1Port)
-        self.leftMotors = wpilib.MotorControllerGroup(
-            self.leftMotorLeader, 
-            wpilib.Talon(constants.DriveConstants.kLeftMotor2Port),
-        )
+        # self.leftMotorLeader = wpilib.Talon(constants.DriveConstants.kLeftMotor1Port)
+        # self.leftMotors = wpilib.MotorControllerGroup(
+        #     self.leftMotorLeader, 
+        #     wpilib.Talon(constants.DriveConstants.kLeftMotor2Port),
+        # )
         
         
 
-        # The motors on the right side of the drive.
-        self.rightMotorLeader = wpilib.Talon(constants.DriveConstants.kRightMotor1Port)
-        self.rightMotors = wpilib.MotorControllerGroup(
-            self.rightMotorLeader ,
-            wpilib.Talon(constants.DriveConstants.kRightMotor2Port),
-        )
+        # # The motors on the right side of the drive.
+        # self.rightMotorLeader = wpilib.Talon(constants.DriveConstants.kRightMotor1Port)
+        # self.rightMotors = wpilib.MotorControllerGroup(
+        #     self.rightMotorLeader ,
+        #     wpilib.Talon(constants.DriveConstants.kRightMotor2Port),
+        # )
+        self.frontLeftmotor = wpilib.Talon(constants.DriveConstants.kLeftMotor1Port)
+        self.backLeftmotor = wpilib.Talon(constants.DriveConstants.kLeftMotor2Port)
+        self.frontRightmotor = wpilib.Talon(constants.DriveConstants.kRightMotor1Port)
+        self.backRightmotor = wpilib.Talon(constants.DriveConstants.kRightMotor2Port)
+
 
         # The robot's drive
-        self.drive = wpilib.drive.DifferentialDrive(self.leftMotors, self.rightMotors)
+        self.drive = wpilib.drive.MecanumDrive(self.frontLeftmotor, self.backLeftmotor, self.frontRightmotor, self.backRightmotor)
+        # self.drive = wpilib.drive.DifferentialDrive(self.leftMotors, self.rightMotors)
 
         # The left-side drive encoder
         self.leftEncoder = wpilib.Encoder(
@@ -53,7 +59,10 @@ class DriveSubsystem(commands2.Subsystem):
         # We need to invert one side of the drivetrain so that positive voltages
         # result in both sides moving forward. Depending on how your robot's
         # gearbox is constructed, you might have to invert the left side instead.
-        self.rightMotors.setInverted(True)
+        # self.rightMotors.setInverted(True)
+        # TODO: is this needed for mechanum drive? looks yes
+        self.frontRightmotor.setInverted(True)
+        self.backRightmotor.setInverted(True)
 
         # Sets the distance per pulse for the encoders
         self.leftEncoder.setDistancePerPulse(
@@ -107,21 +116,32 @@ class DriveSubsystem(commands2.Subsystem):
         """
         self.drive.setMaxOutput(maxOutput)
 
-    def arcadeDrive(self, fwd: float, rot: float):
+    # TODO: fix the fwd and rot variable names
+    def driveCartesian(self, xSpeed: float, ySpeed: float, zRotation: float):
         """
-        Drives the robot using arcade controls.
+        Drives the robot using cartesian controls.
 
-        :param fwd: the commanded forward movement
-        :param rot: the commanded rotation
+        :param xSpeed: the speed that the robot should drive in the X direction. [-1.0..1.0]
+
+        :param ySpeed: the speed that the robot should drive in the Y direction. This input is
+                          inverted to match the forward == -1.0 that joysticks produce. [-1.0..1.0]
+
+        :param zRotation: the rate of rotation for the robot that is independent of translation. [-1.0..1.0]
         """
-        SmartDashboard.putString("Drive Status", f'Arcade Mode, {fwd=}, {rot=}')
-        self.drive.arcadeDrive(fwd, rot)
+        SmartDashboard.putString("Drive Status", f'Arcade Mode, {xSpeed=}, {ySpeed=}')
+        self.drive.driveCartesian(xSpeed=xSpeed,ySpeed=ySpeed,zRotation=zRotation) #.arcadeDrive(fwd, rot)
     
     def driveDistance(self, distance: float):
-        SmartDashboard.putString("Drive Status", f'Driving {distance=} ?feet?')
-        self.arcadeDrive(fwd=distance, rot=0)
+        
+        avg_speed = 0.5 #ft/s
+        SmartDashboard.putString("Drive Status", f'Driving {distance/avg_speed=} seconds')
+        self.drive.drivePolar(magnitude=1, angle=Rotation2d(0),zRotation=0.0)
+        
         SmartDashboard.putString("Drive Status", f'Just Drove {distance=} ?feet?')
         # if self.getAverageEncoderDistance() >= distance:
         #     self.drive.arcadeDrive(0, 0)
         #     return True
         # return False
+
+
+

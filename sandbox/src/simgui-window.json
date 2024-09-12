@@ -5,7 +5,7 @@
   "MainWindow": {
     "GLOBAL": {
       "fps": "120",
-      "height": "256",
+      "height": "413",
       "maximized": "0",
       "style": "0",
       "userScale": "2",
@@ -36,7 +36,7 @@
     "###Joysticks": {
       "Collapsed": "0",
       "Pos": "251,23",
-      "Size": "976,199"
+      "Size": "976,219"
     },
     "###Keyboard 0 Settings": {
       "Collapsed": "0",
@@ -91,7 +91,7 @@
     "###System Joysticks": {
       "Collapsed": "0",
       "Pos": "6,151",
-      "Size": "246,228"
+      "Size": "232,254"
     },
     "###Timing": {
       "Collapsed": "0",

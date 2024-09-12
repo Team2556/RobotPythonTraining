@@ -1,49 +1,21 @@
-#
-# Copyright (c) FIRST and other WPILib contributors.
-# Open Source Software; you can modify and/or share it under the terms of
-# the WPILib BSD license file in the root directory of this project.
-#
-
-#
-# See the notes for the other physics sample
-#
-
 import wpilib.simulation
 from wpilib.simulation import ( EncoderSim,
                                AnalogGyroSim,
                                PWMSim,
-                            #    DifferentialDrivetrainSim
-                            #    DIOEncoderSim,
-                            #    ADXRS450_GyroSim, PDPData,
-                            #    PneumaticsSim,
-                            #    RoboRIOData, SimDeviceData, SimDeviceSim,
-                            #    SolenoidSim,
-                            #    TalonFXSim, TalonSRXSim, VictorSPXSim,
-                            #    AnalogInputSim, AnalogOutputSim,
-                            #    DigitalInputSim, DigitalOutputSim, 
-                            #    DutyCycleEncoderSim, PowerDistributionSim, RelaySim, UltrasonicSim, AccelerometerSim, GyroBase,
-                            #    ADXL345_I2C, ADXL362
-                               )
+)
+
 from wpilib import SmartDashboard, Field2d
 import wpimath
 
 from pyfrc.physics.core import PhysicsInterface
-from pyfrc.physics import motor_cfgs, tankmodel
+# from pyfrc.physics import motor_cfgs
+from pyfrc.physics.drivetrains import MecanumDrivetrain
+
+
+
 from pyfrc.physics.units import units
-from wpilib import RobotController
-import wpimath.system
-import wpimath.system.plant
 
 import constants
-
-import typing
-
-if typing.TYPE_CHECKING:
-    from robot import MyRobot
-    from robotcontainer import RobotContainer
-
-# there has to be a beter way to do this
-from subsystems.cannonsubsystem import CannonLift
 
 class PhysicsEngine:
     """
@@ -60,116 +32,74 @@ class PhysicsEngine:
         SmartDashboard.putData("Field", self.field)
 
         self.physics_controller = physics_controller
-        self.robotCont = robot.container
+        self.robot = robot
 
-        # Motors
-        self.frontLeftMotor = PWMSim(self.robotCont.robotDrive.frontLeftmotor.getChannel())
-        self.backLeftMotor = PWMSim(self.robotCont.robotDrive.backLeftmotor.getChannel())
-        # self.leftMotors = wpilib.simulation.PWMSim(2)
-        self.frontRightMotor = PWMSim(self.robotCont.robotDrive.frontRightmotor.getChannel())
-        self.backRightMotor = PWMSim(self.robotCont.robotDrive.backRightmotor.getChannel())
-        # self.rightMotors = wpilib.simulation.PWMSim(4)
-
-        # Encoders
-        self.leftEncoder = EncoderSim.createForChannel(constants.DriveConstants.kLeftEncoderPorts[0] ) #.getChannel())
-        self.rightEncoder = EncoderSim.createForChannel(constants.DriveConstants.kRightEncoderPorts[0]) #.getChannel())
-
-        # Gyro
-        # self.gyro = wpilib.simulation.AnalogGyroSim(robot.gyro)
-
-        # Change these parameters to fit your robot!
+        # Change these parameters to fit Reggie!
         bumper_width = 3.25 * units.inch
 
         # fmt: off
-        self.drivetrain = tankmodel.TankModel.theory(
-            motor_cfgs.MOTOR_CFG_CIM,           # motor configuration
-            110 * units.lbs,                    # robot mass
-            10.71,                              # drivetrain gear ratio
-            2,                                  # motors per side
-            22 * units.inch,                    # robot wheelbase
-            23 * units.inch + bumper_width * 2, # robot width
-            32 * units.inch + bumper_width * 2, # robot length
-            6 * units.inch,                     # wheel diameter
+        self.drivetrain = MecanumDrivetrain(
+            x_wheelbase=23.5 * units.inch, y_wheelbase=22.5 * units.inch,
+            # wheel_diameter=6 * units.inch, wheel_width=2 * units.inch,
+            # front_left_motor=constants.DriveConstant.kLeftMotor1Port,
+            # rear_left_motor=constants.DriveConstant.kLeftMotor2Port,
+            # front_right_motor=constants.DriveConstant.kRightMotor1Port,
+            # rear_right_motor=constants.DriveConstant.kRightMotor2Port,
         )
         # fmt: on
 
-        # Cannon Lift to aim
-        # The arm gearbox represents a gearbox containing two Vex 775pro motors.
-        CannonLiftConstants = constants.CannonLiftConstants
-        self.armGearbox = wpimath.system.plant.DCMotor.vex775Pro(2)
-        # Simulation classes help us simulate what's going on, including gravity.
-        # This arm sim represents an arm that can travel from -75 degrees (rotated down front)
-        # to 255 degrees (rotated down in the back).
-        self.armSim = wpilib.simulation.SingleJointedArmSim(
-            self.armGearbox,
-            CannonLiftConstants.kArmReduction,
-            wpilib.simulation.SingleJointedArmSim.estimateMOI(
-                CannonLiftConstants.kArmLength, CannonLiftConstants.kArmMass
-            ),
-            CannonLiftConstants.kArmLength,
-            CannonLiftConstants.kMinAngleRads,
-            CannonLiftConstants.kMaxAngleRads,
-            True,
-            # Add noise with a std-dev of 1 tick
-            CannonLiftConstants.kArmEncoderDistPerPulse,
-        )
+        # fmt: off
+        self.physics_controller = physics_controller#.add_model(self.drivetrain)
+        # fmt: on
 
+        self.frontLeftMotor = PWMSim(robot.drivetrain.frontLeftmotor.getChannel())
+        self.backLeftMotor = PWMSim(robot.drivetrain.backLeftmotor.getChannel())
+        self.frontRightMotor = PWMSim(robot.drivetrain.frontRightmotor.getChannel())
+        self.backRightMotor = PWMSim(robot.drivetrain.backRightmotor.getChannel())
+        #self.robot.drivetrain.drive.frontLeftmotor.getChannel())
+        # self.gyro = AnalogGyroSim(wpilib.AnalogGyro(0))
+        # self.gyro.setAngle(0)
+
+        self.frontLeftEncoder = EncoderSim(wpilib.Encoder(0, 1))
+        self.frontRightEncoder = EncoderSim(wpilib.Encoder(2, 3))
+        self.backLeftEncoder = EncoderSim(wpilib.Encoder(4, 5))
+        self.backRightEncoder = EncoderSim(wpilib.Encoder(6, 7))
+
+        # self.physics_controller.add_device_gyro(self.gyro)
+        # self.physics_controller.add_device_encoder(self.frontLeftEncoder)
+        # self.physics_controller.add_device_encoder(self.frontRightEncoder)
+        # self.physics_controller.add_device_encoder(self.backLeftEncoder)
+        # self.physics_controller.add_device_encoder(self.backRightEncoder)
 
     def update_sim(self, now: float, tm_diff: float) -> None:
         """
-        Called when the simulation parameters for the program need to be
-        updated.
-
-        :param now: The current time as a float
-        :param tm_diff: The amount of time that has passed since the last
-                        time that this function was called
+        Update the simulation of the physics model
         """
+        # self.drivetrain.wheelSpeeds = self.drivetrain.wheelSpeeds
+        # Simulate the drivetrain
+        lf_motor = self.frontLeftMotor.getSpeed()
+        lr_motor = self.backLeftMotor.getSpeed()
+        rf_motor = self.frontRightMotor.getSpeed()
+        rr_motor = self.backRightMotor.getSpeed()
+        chasisSpeeds = self.drivetrain.calculate(
+            self.frontLeftMotor.getSpeed(),
+            self.backLeftMotor.getSpeed(),
+            self.frontRightMotor.getSpeed(),
+            self.backRightMotor.getSpeed(),
+        )
 
-        # Simulate the drivetrain (only front motors used because read should be in sync)
-        # TODO add back motors
-        leftMotorSpeed = self.frontLeftMotor.getSpeed()
-        SmartDashboard.putNumber("Sim- Front Left Motor Speed", leftMotorSpeed)
-        rightMotorSpeed = self.frontRightMotor.getSpeed()
-        SmartDashboard.putNumber("Sim- Front Right Motor Speed", rightMotorSpeed)
-
-        transform = self.drivetrain.calculate(leftMotorSpeed, rightMotorSpeed, tm_diff)
-
-
-        pose = self.physics_controller.move_robot(transform)
-        self.field.setRobotPose(pose) #should display on glass
-        SmartDashboard.putNumberArray("Sim- Pose", [pose.x, pose.y, pose.rotation().degrees()])
-        # SmartDashboard.putNumberArray("Sim- Position", [pose.x, pose.y])
-        SmartDashboard.putNumber("Sim- Position X", pose.x)
-        SmartDashboard.putNumber("Sim- Position Y", pose.y)
-
-        # self.physics_controller.move_robot(transform)
-
-        # compute encoder
-        l_encoder = self.drivetrain.l_position / constants.DriveConstants.kEncoderDistancePerPulse #ENCODER_TICKS_PER_FT
-        r_encoder = self.drivetrain.r_position / constants.DriveConstants.kEncoderDistancePerPulse #ENCODER_TICKS_PER_FT
-        self.leftEncoder.setDistance(l_encoder)
-        self.rightEncoder.setDistance(r_encoder)
-        SmartDashboard.putNumber("Sim- Left Encoder", l_encoder)
-        SmartDashboard.putNumber("Sim- Right Encoder", r_encoder)
-
-        # Simulate the cannon lift
-        self.encoderSim = wpilib.simulation.EncoderSim( self.robotCont.lift.encoder )
-        #CannonLift.encoder() )
-        self.motorSim = wpilib.simulation.PWMSim(constants.CannonLiftConstants.kMotorPort)
-        # something like this goes in the physics.py file
-        # self.arm = SingleJointedArmSim(constants.CannonConstants.kArmSimModel)
-        # self.arm.setFriction(constants.CannonConstants.kArmFriction)
-        # self.arm.setMass(constants.CannonConstants.kArmMass)
-        # self.arm.setGearing(constants.CannonConstants.kArmGearing)
-        # self.arm.setInertia(constants.CannonConstants.kArmInertia)
-        # self.arm.setVoltage(0)
-        # self.arm.setAngle(constants.CannonConstants.kArmStartingAngle)
-        # self.arm.setVelocity(0)
-        # self.arm.setAcceleration(0)
-        # The P gain for the PID controller that drives this arm.
+        # need to get the movement tmdiff
+        
+        SmartDashboard.putNumber("update SIM chasis speed vx", chasisSpeeds.vx)
+        SmartDashboard.putNumber("update SIM chasis speed vy", chasisSpeeds.vy)
+        SmartDashboard.putNumber("update SIM chasis speed omega", chasisSpeeds.omega)
+        
 
 
-        # Update the gyro simulation
-        # -> FRC gyros are positive clockwise, but the returned pose is positive
-        #    counter-clockwise
-        # self.gyro.setAngle(-pose.rotation().degrees())
+        pose = self.physics_controller.drive( speeds = chasisSpeeds, tm_diff=.02)# .move_robot(transform)
+
+        SmartDashboard.putNumber("Pose X", pose.X())
+        SmartDashboard.putNumber("Pose Y", pose.Y())
+        SmartDashboard.putNumber("Pose Rotation", pose.rotation().degrees())
+        self.field.setRobotPose(pose)
+        

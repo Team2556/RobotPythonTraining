@@ -2,14 +2,18 @@
   "NetworkTables": {
     "types": {
       "/FMSInfo": "FMSInfo",
+      "/SmartDashboard/Cannon": "Subsystem",
       "/SmartDashboard/CannonChargeSubsystem": "Subsystem",
       "/SmartDashboard/Charge and Shoot": "Command",
       "/SmartDashboard/Drive 1ft": "Command",
       "/SmartDashboard/DriveSubsystem": "Subsystem",
+      "/SmartDashboard/Drivetrain": "Subsystem",
       "/SmartDashboard/Field": "Field2d",
       "/SmartDashboard/FireSubsystem": "Subsystem",
+      "/SmartDashboard/SafeAndArm": "Subsystem",
       "/SmartDashboard/Scheduler": "Scheduler",
-      "/SmartDashboard/SendableChooser[0]": "String Chooser"
+      "/SmartDashboard/SendableChooser[0]": "String Chooser",
+      "/SmartDashboard/front left motor": "Motor Controller"
     },
     "windows": {
       "/SmartDashboard/Field": {

@@ -1,34 +1,53 @@
-#!/usr/bin/env python3
-#
-# Copyright (c) FIRST and other WPILib contributors.
-# Open Source Software; you can modify and/or share it under the terms of
-# the WPILib BSD license file in the root directory of this project.
-#
 
-import typing
+#restart of robot
+#create a mechanicum robot with:
+# a cannon that is fired by a servo releasing pressure from a prep-tank
+# the prep-tank is charged by a reserve tank
+# the reserve tank is charged by a pump
+# the robot is driven by an Xbox controller
 
+#region imports
+import subsystems.cannon
+import subsystems.drivetrain
+import subsystems.safeandarm
 import wpilib
+from wpilib import (SmartDashboard, 
+                    # SendableChooser, 
+                    # CameraServer, 
+                    # DigitalInput, 
+                    # DoubleSolenoid, 
+                    # Joystick, 
+                    # Servo, 
+                    # Timer, 
+                    # VictorSP,
+                    # XboxController,
+                    # Compressor,
+                    # AnalogInput,
+                    # Encoder,
+                    Field2d,
+                    
+                    
+
+                    )
 import commands2
-import commands2.cmd
-from constants import (AutoConstants, CannonConstants, DriveConstants, ShooterConstants, RobotArmStates)
-import robotcontainer
-from wpilib import SmartDashboard, Field2d
 from commands2 import CommandScheduler
+# from constants import ()
+import typing
+# import ntcore
 
-"""
-The VM is configured to automatically run this class, and to call the functions corresponding to
-each mode, as described in the TimedRobot documentation. If you change the name of this class or
-the package after creating this project, you must also update the build.gradle file in the
-project.
-"""
+import subsystems
+import constants
+# from commands.driving  import DriveByController
 
 
+
+
+
+#endregion
+
+#region robot class
 class MyRobot(commands2.TimedCommandRobot):
-    """
-    Command v2 robots are encouraged to inherit from TimedCommandRobot, which
-    has an implementation of robotPeriodic which runs the scheduler for you
-    """
-
+    #region robotInit
     def robotInit(self) -> None:
         """
         This function is run when the robot is first started up and should be used for any
@@ -36,49 +55,116 @@ class MyRobot(commands2.TimedCommandRobot):
         """
         self.autonomousCommand: typing.Optional[commands2.Command] = None
 
+        #region subsystems init
+        self.cannon = subsystems.cannon.Cannon()
+        self.drivetrain = subsystems.drivetrain.Drivetrain()
+        self.drive = self.drivetrain.drive
+        self.safeandarm = subsystems.safeandarm.SafeAndArm()
+    
+        #endregion subsystem init
+
+
+        #region Controller init
+        self.driver1Controller = commands2.button.CommandXboxController(
+            constants.OIConstants.kDriver1ControllerPort
+        )
+
+        #endregion controller init
+
+        #region default commands
+
+        self.drivetrain.setDefaultCommand(self.drivetrain.DriveByController(drivetrain= self.drivetrain, controller= self.driver1Controller))
+        
+        #endregion default commands
+
+        #region SmartDashboard init
+
         SmartDashboard.putData(CommandScheduler.getInstance())
-        # doing this in the container... but should it be here ? self.ArmState = RobotArmStates.DISARMED
         self.field = Field2d()
         SmartDashboard.putData("Field", self.field)
 
-        # Instantiate our RobotContainer.  This will perform all our button bindings, and put our
-        # autonomous chooser on the dashboard.
-        self.container = robotcontainer.RobotContainer()
-        
-        
+        SmartDashboard.putData("Cannon", self.cannon)
+        SmartDashboard.putData("Drivetrain", self.drivetrain)
+        SmartDashboard.putData("SafeAndArm", self.safeandarm)
 
+        #region Smart dashboard chooser for autonomous
+        self.auto_chooser = wpilib.SendableChooser()
+        self.auto_chooser.setDefaultOption("Charge and Shoot", self.cannon.Charge_Shoot)
+        self.auto_chooser.addOption("Drive 1ft", self.drivetrain.auto_drive_1ft)
+        SmartDashboard.putData(self.auto_chooser)
+        # def get_auto_command():
+        #     return self.auto_chooser.getSelected()
+        #endregion
+
+
+
+        #endregion SmartDashboard init
+
+
+    #region disabled
     def disabledInit(self) -> None:
         """This function is called once each time the robot enters Disabled mode."""
 
     def disabledPeriodic(self) -> None:
         """This function is called periodically when disabled"""
 
+    #endregion
+
+    #region autonomous
     def autonomousInit(self) -> None:
         """This autonomous runs the autonomous command selected by your RobotContainer class."""
-        self.autonomousCommand = self.container.getAutonomousCommand()
-
-        # schedule the autonomous command (example)
-        if self.autonomousCommand is not None:
-            self.autonomousCommand.schedule()
-        else:
-            print("no auto command?")
-
+        self.auto_chooser.getSelected()
+    
     def autonomousPeriodic(self) -> None:
         """This function is called periodically during autonomous"""
-        # self.field.setRobotPose(self.odometry.getPose())
+    
+    #endregion
 
+    #region teleop
     def teleopInit(self) -> None:
-        # This makes sure that the autonomous stops running when
-        # teleop starts running. If you want the autonomous to
-        # continue until interrupted by another command, remove
-        # this line or comment it out.
-        if self.autonomousCommand is not None:
-            self.autonomousCommand.cancel()
-
+        """This function is called once each time the robot enters teleop mode."""
+        
     def teleopPeriodic(self) -> None:
         """This function is called periodically during operator control"""
-        # self.field.setRobotPose(self.odometry.getPose())
+        
+        
 
+    #endregion
+
+    #region test
     def testInit(self) -> None:
-        # Cancels all running commands at the start of test mode
-        commands2.CommandScheduler.getInstance().cancelAll()
+        """This function is called once each time the robot enters test mode."""
+
+    def testPeriodic(self) -> None:
+        """This function is called periodically during test mode."""
+
+    #endregion
+
+    #region Xbox controller bindings
+    def configureButtonBindings(self):
+        """
+        Use this method to define your button->command mappings. Buttons can be created via the button
+        factories on commands2.button.CommandGenericHID or one of its
+        subclasses (commands2.button.CommandJoystick or command2.button.CommandXboxController).
+        """
+
+        # Configure your button bindings here
+
+        # We can bind commands while retaining references to them in RobotContainer
+
+        # Spin up the shooter when the 'A' button is pressed
+        # self.driver1Controller.a().onTrue(self.armCannon)
+
+        # Turn off the shooter when the 'B' button is pressed
+        # self.driver1Controller.b().onTrue(self.abortArm)
+
+        pass
+
+        
+
+    #endregion
+
+
+
+
+

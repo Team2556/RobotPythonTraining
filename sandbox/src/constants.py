@@ -1,134 +1,96 @@
-#
-# Copyright (c) FIRST and other WPILib contributors.
-# Open Source Software; you can modify and/or share it under the terms of
-# the WPILib BSD license file in the root directory of this project.
-#
+from enum import IntEnum, auto, unique
 
-"""
-A place for the constant values in the code that may be used in more than one place. 
-This offers a convenient resources to teams who need to make both quick and universal
-changes.
-"""
-
-import math
-from enum import IntEnum, unique
-
-
-class DriveConstants:
-    kLeftMotor1Port = 0
-    kLeftMotor2Port = 1
-    kRightMotor1Port = 2
-    kRightMotor2Port = 3
-
-    kLeftEncoderPorts = (0, 1)
-    kRightEncoderPorts = (2, 3)
-    kLeftEncoderReversed = False
-    kRightEncoderReversed = True
-
-    kEncoderCPR = 1024
-    kWheelDiameterInches = 6
-
-    # Assumes the encoders are directly mounted on the wheel shafts
-    kEncoderDistancePerPulse = (kWheelDiameterInches * math.pi) / kEncoderCPR
+#region RoboRio Constants
+# included to help with communication and readability
+class Rio_DIO(IntEnum):
+    ZERRO = 0
+    ONE = auto()
+    TWO = auto()
+    THREE = auto()
+    FOUR = auto()
+    FIVE = auto()
+    SIX = auto()
+    SEVEN = auto()
+    EIGHT = auto()
+    NINE = auto()
+    # TODO figure out how CAN works..
+    TEN = auto()
+    ELEVEN = auto()
+    TWELVE = auto()
+    THIRTEEN = auto()
+    FOURTEEN = auto()
+    FIFTEEN = auto()
+    SIXTEEN = auto()
+    SEVENTEEN = auto()
 
 
-class ShooterConstants:
-    kEncoderPorts = (4, 5)
-    kEncoderReversed = False
-    kEncoderCPR = 1024
-    kEncoderDistancePerPulse = 1 / kEncoderCPR
+class Rio_PWM(IntEnum):
+    ONE = 0
+    TWO = auto()
+    THREE = auto()
+    FOUR = auto()
+    FIVE = auto()
+    SIX = auto()
+    SEVEN = auto()
+    EIGHT = auto()
+    NINE = auto()
+    TEN = auto()
 
-    kShooterMotorPort = 4
-    kFeederMotorPort = 5
+class Rio_Relay(IntEnum):
+    ZERO = 0
+    ONE = auto()
+    TWO = auto()
+    THREE = auto()
 
-    kShooterFreeRPS = 5300
-    kShooterTargetRPS = 4000
-    kShooterToleranceRPS = 50
+class Rio_Analog(IntEnum):
+    ZERO = 0
+    ONE = auto()
+    TWO = auto()
+    THREE = auto()
+#endregion
 
-    # These are not real PID gains, and will have to be tuned for your specific robot.
-    kP = 1
-    kI = 0
-    kD = 0
+#region CAN Constants
+class CAN_Address(IntEnum):
+    ZERRO = 0
+    ONE = auto()
+    TWO = auto()
+    THREE = auto()
+    FOUR = auto()
+    FIVE = auto()
+    SIX = auto()
+    SEVEN = auto()
+    EIGHT = auto()
+    NINE = auto()
+    TEN = auto()
+    ELEVEN = auto()
+    TWELVE = auto()
 
-    # On a real robot the feedforward constants should be empirically determined; these are
-    # reasonable guesses.
-    kSVolts = 0.05
-
-    # Should have value 12V at free speed...
-    kVVoltSecondsPerRotation = 12.0 / kShooterFreeRPS
-
-    kFeederSpeed = 0.5
-
-    kFireSolenoidPort = 6
-
-
-class CannonLiftConstants:
-    kMotorPort = 7
-    kEncoderPorts = (6, 7)
-    kEncoderReversed = False
-    kEncoderCPR = 1024
-    kArmEncoderDistPerPulse = 360 / kEncoderCPR
-    kArmPositionKey = "Cannon Position"
-    kArmPKey = "CannonP"
-    kArmMaxAngleDegrees = 60
-    kArmMinAngleDegrees = -15
-
-    kDefaultArmKp = 1
-    kDefaultArmSetpointDegrees = 90
-
-
-    kSVolts = 0.05
-    kVVoltSecondsPerRotation = 12.0 / 1.0
-
-    kLiftTargetRPS = 1
-    kLiftToleranceRPS = 0.1
-
-    kLimitSwitchTopPort = 8
-    kLimitSwitchBottomPort = 9
-    # CannonLiftConstants.kArmReduction,
-            # wpilib.simulation.SingleJointedArmSim.estimateMOI(
-            #     CannonLiftConstants.kArmLength, CannonLiftConstants.kArmMass
-            # ),
-            # CannonLiftConstants.kArmLength,
-            # CannonLiftConstants.kMinAngleRads,
-            # CannonLiftConstants.kMaxAngleRads,
-    kArmReduction = 2/1
-    kArmLength = 4
-    kArmMass = 10
-    kMinAngleRads = 15/180
-    kMaxAngleRads = 45/180
+#endregion
 
 
-class CannonConstants:
-    kCannonMotorPort = 7
-    kCannonChargeSolenoidPort = 9
-    kEncoderPorts = (6, 7)
-    kEncoderReversed = False
-    kEncoderCPR = 1024
+    
 
-    kSVolts = 0.05
-    kVVoltSecondsPerRotation = 12.0 / 1.0
-
-
-    kCannonTargetRPS = 1
-    kCannonToleranceRPS = 0.1
-
-    kLimitSwitchTopPort = 8
-    kLimitSwitchBottomPort = 9
-
-@unique
-class RobotArmStates(IntEnum):
-    ARMING = 0
-    ARMED = 1
-    DISARMED = 2
-
-class AutoConstants:
-    kAutoTimeoutSeconds = 12
-    kAutoShootTimeSeconds = 7
-    kAutoChargeTimeSeconds = 3
-
+class DriveConstant:
+    kLeftMotor1Port = CAN_Address.ZERRO
+    kLeftMotor2Port = CAN_Address.ONE
+    kRightMotor1Port = CAN_Address.TWO
+    kRightMotor2Port = CAN_Address.THREE
+    kFrontLeftEncoderPorts = (Rio_DIO.TEN, Rio_DIO.ELEVEN)
+    kFrontRightEncoderPorts = (Rio_DIO.TWELVE, Rio_DIO.THIRTEEN)
+    kBackLeftEncoderPorts = (Rio_DIO.FOURTEEN, Rio_DIO.FIFTEEN)
+    kBackRightEncoderPorts = (Rio_DIO.SIXTEEN, Rio_DIO.SEVENTEEN)
+    kEncoderDistancePerPulse = 1
+    kMaxOutput = .9
+    kDeadband = .1
 
 class OIConstants:
-    kDriverControllerPort = 0
+    kDriver1ControllerPort = 0
+
+    kDriver2ControllerPort = 1
 
 
+class ShooterConstant:
+    ...
+
+class CannonConstant:
+    ...

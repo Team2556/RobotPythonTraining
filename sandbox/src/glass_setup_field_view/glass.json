@@ -2,36 +2,30 @@
   "NetworkTables": {
     "types": {
       "/FMSInfo": "FMSInfo",
-      "/SmartDashboard/Cannon": "Mechanism2d",
-      "/SmartDashboard/Cannon Lift Down": "Command",
-      "/SmartDashboard/Cannon Lift Up": "Command",
+      "/SmartDashboard/Cannon": "Subsystem",
       "/SmartDashboard/CannonChargeSubsystem": "Subsystem",
-      "/SmartDashboard/CannonLift": "Subsystem",
       "/SmartDashboard/Charge and Shoot": "Command",
       "/SmartDashboard/Drive 1ft": "Command",
       "/SmartDashboard/DriveSubsystem": "Subsystem",
+      "/SmartDashboard/Drivetrain": "Subsystem",
       "/SmartDashboard/Field": "Field2d",
       "/SmartDashboard/FireSubsystem": "Subsystem",
+      "/SmartDashboard/SafeAndArm": "Subsystem",
       "/SmartDashboard/Scheduler": "Scheduler",
-      "/SmartDashboard/SendableChooser[0]": "String Chooser"
+      "/SmartDashboard/SendableChooser[0]": "String Chooser",
+      "/SmartDashboard/front left motor": "Motor Controller"
     },
     "windows": {
-      "/SmartDashboard/Cannon": {
-        "window": {
-          "visible": true
-        }
-      },
       "/SmartDashboard/Field": {
         "Robot": {
           "arrowSize": 54,
-          "style": "Box/Image"
+          "style": "Track"
         },
-        "bottom": 544,
-        "builtin": "2023 Charged Up",
-        "height": 8.013679504394531,
-        "left": 46,
-        "right": 1088,
-        "top": 36,
+        "bottom": 1476,
+        "height": 8.210550308227539,
+        "left": 150,
+        "right": 2961,
+        "top": 79,
         "width": 16.541748046875,
         "window": {
           "visible": true

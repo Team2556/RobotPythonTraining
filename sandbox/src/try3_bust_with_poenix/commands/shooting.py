@@ -7,3 +7,6 @@ def ChargeResivoir():
         ...
 def ChargePreTank():
         ...
+
+def Charge_Shoot():
+        pass

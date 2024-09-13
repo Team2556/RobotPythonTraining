@@ -8,7 +8,7 @@ from commands2 import CommandScheduler
 from commands2 import ConditionalCommand
 from commands2 import DeferredCommand
 from commands2 import FunctionalCommand
-from constants import ArmConstants
+from try3_bust_with_poenix.constants import ArmConstants
 
 from id import PWM_channels, DIO_channels, PCM_channels,Solenoid_modules,Gears 
 

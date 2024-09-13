@@ -10,7 +10,7 @@ import commands2
 import commands2.cmd
 from wpilib import SmartDashboard
 
-import constants
+import try3_bust_with_poenix.constants as constants
 
 
 # Robot will have a cannon connected to a large pneumatic cylinder, called prep-tank

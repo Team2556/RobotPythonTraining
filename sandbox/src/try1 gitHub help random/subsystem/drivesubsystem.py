@@ -8,7 +8,7 @@ import wpilib
 import wpilib.drive
 import commands2
 
-import constants
+import try3_bust_with_poenix.constants as constants
 
 
 class DriveSubsystem(commands2.Subsystem):

@@ -13,11 +13,11 @@ import subsystems.cannonsubsystem
 SmartDashboard.putBoolean("Bridge Limit", False)
 SmartDashboard.putNumber("Bridge Angle", 900)
 
-import constants
+import try3_bust_with_poenix.constants as constants
 import subsystems.drivesubsystem
 import subsystems.shootersubsystem
 
-from constants import AutoConstants, RobotArmStates
+from try3_bust_with_poenix.constants import AutoConstants, RobotArmStates
 import ntcore
 
 

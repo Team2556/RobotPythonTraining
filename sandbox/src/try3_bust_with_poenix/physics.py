@@ -2,6 +2,21 @@ import wpilib.simulation
 from wpilib.simulation import ( EncoderSim,
                                AnalogGyroSim,
                                PWMSim,
+                                DIOSim,
+                                DutyCycleEncoderSim,
+                                RelaySim,
+                                SolenoidSim,                                    
+                                UltrasonicSim,
+                                DigitalPWMSim,
+                                AnalogInputSim,
+                                AnalogOutputSim,
+                                ADXRS450_GyroSim,
+                                BuiltInAccelerometerSim,
+                                DifferentialDrivetrainSim,
+                                EncoderSim,
+                                FlywheelSim,
+                                DCMotorSim
+                                    
 )
 
 from wpilib import SmartDashboard, Field2d
@@ -10,19 +25,20 @@ import wpimath
 from pyfrc.physics.core import PhysicsInterface
 # from pyfrc.physics import motor_cfgs
 from pyfrc.physics.drivetrains import MecanumDrivetrain
+from phoenix6.unmanaged import feed_enable
 
 
 
 from pyfrc.physics.units import units
 
-import constants
+import try3_bust_with_poenix.constants as constants
 
 class PhysicsEngine:
     """
     Simulates a 4-wheel robot using Tank Drive joystick control
     """
 
-    def __init__(self, physics_controller: PhysicsInterface, robot: "MyRobot"):
+    def __init__(self, physics_controller: PhysicsInterface, robot: "MyRobot"): # type: ignore
         """
         :param physics_controller: `pyfrc.physics.core.Physics` object
                                    to communicate simulation effects to
@@ -52,11 +68,11 @@ class PhysicsEngine:
         self.physics_controller = physics_controller#.add_model(self.drivetrain)
         # fmt: on
 
-        self.frontLeftMotor = PWMSim(robot.drivetrain.frontLeftmotor.getChannel())
-        self.backLeftMotor = PWMSim(robot.drivetrain.backLeftmotor.getChannel())
-        self.frontRightMotor = PWMSim(robot.drivetrain.frontRightmotor.getChannel())
-        self.backRightMotor = PWMSim(robot.drivetrain.backRightmotor.getChannel())
-        #self.robot.drivetrain.drive.frontLeftmotor.getChannel())
+        self.frontLeftMotor = PWMSim(0)#robot.drivetrain.frontLeftmotor.getChannel())
+        self.backLeftMotor = PWMSim(1)#robot.drivetrain.backLeftmotor.getChannel())
+        self.frontRightMotor = PWMSim(2)#robot.drivetrain.frontRightmotor.getChannel())
+        self.backRightMotor = PWMSim(3)#robot.drivetrain.backRightmotor.getChannel())
+        
         # self.gyro = AnalogGyroSim(wpilib.AnalogGyro(0))
         # self.gyro.setAngle(0)
 
@@ -75,6 +91,14 @@ class PhysicsEngine:
         """
         Update the simulation of the physics model
         """
+        # Currently, the Python API for CTRE doesn't automatically detect the the
+
+        # Sim driverstation status and enable the signals. So, for now, manually
+
+        # feed the enable signal for double the set robot period.
+
+        feed_enable(0.020 * 2)
+
         # self.drivetrain.wheelSpeeds = self.drivetrain.wheelSpeeds
         # Simulate the drivetrain
         lf_motor = self.frontLeftMotor.getSpeed()

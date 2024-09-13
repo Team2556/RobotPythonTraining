@@ -12,7 +12,7 @@ from wpimath.system.plant import DCMotor
 from wpimath import units
 
 from wpilib.simulation import BatterySim, EncoderSim, RoboRioSim, SingleJointedArmSim
-from constants import CannonLiftConstants
+from try3_bust_with_poenix.constants import CannonLiftConstants
 
 class CannonLift(commands2.Subsystem):
     def __init__(self):

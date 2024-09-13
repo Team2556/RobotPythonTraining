@@ -71,16 +71,16 @@ class CAN_Address(IntEnum):
     
 
 class DriveConstant:
-    kLeftMotor1Port = CAN_Address.ZERRO
+    kLeftMotor1Port = CAN_Address.THREE
     kLeftMotor2Port = CAN_Address.ONE
     kRightMotor1Port = CAN_Address.TWO
-    kRightMotor2Port = CAN_Address.THREE
+    kRightMotor2Port = CAN_Address.FOUR
     kFrontLeftEncoderPorts = (Rio_DIO.TEN, Rio_DIO.ELEVEN)
     kFrontRightEncoderPorts = (Rio_DIO.TWELVE, Rio_DIO.THIRTEEN)
     kBackLeftEncoderPorts = (Rio_DIO.FOURTEEN, Rio_DIO.FIFTEEN)
     kBackRightEncoderPorts = (Rio_DIO.SIXTEEN, Rio_DIO.SEVENTEEN)
     kEncoderDistancePerPulse = 1
-    kMaxOutput = .9
+    kMaxOutput = .9123
     kDeadband = .1
 
 class OIConstants:

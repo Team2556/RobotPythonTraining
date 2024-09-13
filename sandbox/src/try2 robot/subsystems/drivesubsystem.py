@@ -10,7 +10,7 @@ from wpimath.geometry import Rotation2d, Rotation3d, Translation2d, Translation3
 import commands2
 from wpilib import SmartDashboard
 
-import constants
+import try3_bust_with_poenix.constants as constants
 
 class DriveSubsystem(commands2.Subsystem ):
     def __init__(self) -> None:

@@ -34,12 +34,12 @@ from wpilib import RobotController
 import wpimath.system
 import wpimath.system.plant
 
-import constants
+import try3_bust_with_poenix.constants as constants
 
 import typing
 
 if typing.TYPE_CHECKING:
-    from robot import MyRobot
+    from try3_bust_with_poenix.robot import MyRobot
     from robotcontainer import RobotContainer
 
 # there has to be a beter way to do this

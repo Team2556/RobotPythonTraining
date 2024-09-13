@@ -1,7 +1,7 @@
 
 import wpilib
 import commands2
-from constants import ShooterConstant
+from try3_bust_with_poenix.constants import ShooterConstant
 
 class SafeAndArm(commands2.Subsystem):
     def __init__(self):

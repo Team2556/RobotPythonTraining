@@ -10,7 +10,7 @@ import commands2
 import wpimath.controller
 import wpimath.trajectory
 
-import constants
+import try3_bust_with_poenix.constants as constants
 
 
 class CannonActuator(commands2.ProfiledPIDSubsystem):

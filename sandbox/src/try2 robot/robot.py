@@ -10,7 +10,7 @@ import typing
 import wpilib
 import commands2
 import commands2.cmd
-from constants import (AutoConstants, CannonConstants, DriveConstants, ShooterConstants, RobotArmStates)
+from try3_bust_with_poenix.constants import (AutoConstants, CannonConstants, DriveConstants, ShooterConstants, RobotArmStates)
 import robotcontainer
 from wpilib import SmartDashboard, Field2d
 from commands2 import CommandScheduler

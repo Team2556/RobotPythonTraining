@@ -31,12 +31,12 @@
     "###FMS": {
       "Collapsed": "0",
       "Pos": "6,151",
-      "Size": "32,38"
+      "Size": "202,214"
     },
     "###Joysticks": {
       "Collapsed": "0",
       "Pos": "251,23",
-      "Size": "32,38"
+      "Size": "976,219"
     },
     "###Keyboard 0 Settings": {
       "Collapsed": "0",
@@ -96,7 +96,7 @@
     "###Timing": {
       "Collapsed": "0",
       "Pos": "6,151",
-      "Size": "32,38"
+      "Size": "162,142"
     },
     "Debug##Default": {
       "Collapsed": "0",
@@ -106,7 +106,7 @@
     "Robot State": {
       "Collapsed": "0",
       "Pos": "5,20",
-      "Size": "32,38"
+      "Size": "109,134"
     }
   }
 }

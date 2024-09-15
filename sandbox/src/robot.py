@@ -19,46 +19,32 @@ from constants import (DriveConstant,
                        )
 import phoenix5
 import math
-# import ctre
-
+from subsystems.drivetrain import DriveTrain
 
 
 #region Helper functions
-def rotate_45_degrees(x, y):
-        radians = math.radians(45)
-        cos_angle = math.cos(radians)
-        sin_angle = math.sin(radians)
-        x_new = x * cos_angle - y * sin_angle
-        y_new = x * sin_angle + y * cos_angle
-        return x_new, y_new
+
 #endregion Helper functions
-class MyRobot(wpilib.TimedRobot):
+class MyRobot(commands2.TimedCommandRobot):
     def robotInit(self):
         """
         This function is called upon program startup and
         should be used for any initialization code.
         """
-        self.frontLeftMotor = phoenix5.WPI_TalonSRX(DriveConstant.kLeftMotor1Port)
-        self.backLeftMotor = phoenix5.WPI_TalonSRX(DriveConstant.kLeftMotor2Port)
-        self.frontRightMotor = phoenix5.WPI_TalonSRX(DriveConstant.kRightMotor1Port)
-        self.backRightMotor = phoenix5.WPI_TalonSRX(DriveConstant.kRightMotor2Port)
-        # self.frontLeftMotor = 
-        #rev.CANSparkMax(DriveConstant.kLeftMotor1Port, rev.CANSparkMax.MotorType.kBrushless)
-        # self.leftDrive = rev.CANSparkMax(DriveConstant.kLeftMotor2Port, rev.CANSparkMax.MotorType.kBrushless)
-        # self.frontRightMotor = rev.CANSparkMax(DriveConstant.kRightMotor1Port, rev.CANSparkMax.MotorType.kBrushless)
-        # self.rightDrive = rev.CANSparkMax(DriveConstant.kRightMotor2Port, rev.CANSparkMax.MotorType.kBrushless)
+        CommandScheduler.getInstance().run()
+        
 
-        # We need to invert one side of the drivetrain so that positive voltages
-        # result in both sides moving forward. Depending on how your robot's
-        # gearbox is constructed, you might have to invert the left side instead.
-        self.frontRightMotor.setInverted(True)
-        self.backRightMotor.setInverted(True)
+        self.robotDrive = DriveTrain()
 
-        self.robotDrive = wpilib.drive.MecanumDrive(self.frontLeftMotor, self.frontRightMotor, self.backLeftMotor, self.backRightMotor)
-        # .DifferentialDrive(
-        #     self.frontLeftMotor, self.frontRightMotor
-        # )
-        self.controller = wpilib.XboxController(OIConstant.kDriver1ControllerPort)
+        self.driverController = commands2.button.CommandXboxController(
+            OIConstant.kDriver1ControllerPort)
+        # Configure the button bindings
+        self.ConfigureButtonBindings()
+
+        self.robotDrive.setDefaultCommand(
+            commands2.cmd.run(lambda: self.robotDrive.driveWithJoystick(self.driverController)
+                              , self.robotDrive)
+                              )
         self.timer = wpilib.Timer()
 
         #region SmartDashboard init
@@ -69,10 +55,6 @@ class MyRobot(wpilib.TimedRobot):
         #endregion SmartDashBoard init
 
 
-        # Initialize the Pigeon IMU
-        # self.pigeon = ctre.sensors.    WPI_PigeonIMU(DriveConstant.kPigeonPort)
-        # self.pigeon.setFusedHeading(0.0)  # Reset the heading to zero
-
     def autonomousInit(self):
         """This function is run once each time the robot enters autonomous mode."""
         self.timer.restart()
@@ -80,31 +62,66 @@ class MyRobot(wpilib.TimedRobot):
     def autonomousPeriodic(self):
         """This function is called periodically during autonomous."""
 
-        # Drive for two seconds
-        if self.timer.get() < 2.0:
-            # Drive forwards half speed, make sure to turn input squaring off
-            self.robotDrive.driveCartesian(0.5, 0, 0)
-        else:
-            self.robotDrive.stopMotor()  # Stop robot
-
     def teleopInit(self):
         """This function is called once each time the robot enters teleoperated mode."""
+        # if self.autonomousCommand is not None:
+        #     self.autonomousCommand.cancel()
 
 
     def teleopPeriodic(self):
         """This function is called periodically during teleoperated mode."""
-        self.robotDrive .driveCartesian(
-            *(-self.controller.getLeftY(), self.controller.getRightX()), #rotate_45_degrees
-            self.controller.getLeftX(), Rotation2d(0) )
-            
-  
 
     def testInit(self):
         """This function is called once each time the robot enters test mode."""
+        commands2.CommandScheduler.getInstance().cancelAll()
 
     def testPeriodic(self):
         """This function is called periodically during test mode."""
 
+    def ConfigureButtonBindings(self):
+        self.driverController.povLeft().onTrue(lambda: self.robotDrive.slowLeft(self.driverController))
+        self.driverController.povRight().onTrue(lambda: self.robotDrive.slowRight(self.driverController))
 
-if __name__ == "__main__":
-    wpilib.run(MyRobot)
+        OnlyFrontLeft = commands2.SequentialCommandGroup(
+            commands2.cmd.run(lambda: self.robotDrive.OnlyFrontLeft()).raceWith(
+                commands2.WaitCommand(2.2)))
+        self.driverController.x().onTrue(OnlyFrontLeft)
+
+
+        OnlyFrontRight = (commands2.cmd.run(lambda: self.robotDrive.OnlyFrontRight())
+                          .raceWith(commands2.WaitCommand(1.2))
+                          .andThen(commands2.WaitCommand(0.5))
+                          .andThen(commands2.cmd.run(lambda: self.robotDrive.OnlyFrontRight())
+                          .raceWith(commands2.WaitCommand(1.2)))
+                          )
+        self.driverController.y().onTrue(OnlyFrontRight)
+
+        OnlyBackLeft = (commands2.cmd.run(lambda: self.robotDrive.OnlyBackLeft())
+                        .raceWith(commands2.WaitCommand(.7))
+                        .andThen(commands2.WaitCommand(0.5))
+                        .andThen(commands2.cmd.run(lambda: self.robotDrive.OnlyBackLeft())
+                        .raceWith(commands2.WaitCommand(.7)))
+                        .andThen(commands2.WaitCommand(0.5))
+                        .andThen(commands2.cmd.run(lambda: self.robotDrive.OnlyBackLeft())
+                        .raceWith(commands2.WaitCommand(.7)))
+                        )
+        self.driverController.a().onTrue(OnlyBackLeft)
+
+        OnlyBackRight = (commands2.cmd.run(lambda: self.robotDrive.OnlyBackRight())
+                         .raceWith(commands2.WaitCommand(.4))
+                         .andThen(commands2.WaitCommand(0.35))
+                         .andThen(commands2.cmd.run(lambda: self.robotDrive.OnlyBackRight())
+                         .raceWith(commands2.WaitCommand(.4)))
+                         .andThen(commands2.WaitCommand(0.35))
+                         .andThen(commands2.cmd.run(lambda: self.robotDrive.OnlyBackRight())
+                         .raceWith(commands2.WaitCommand(.4)))
+                         .andThen(commands2.WaitCommand(0.35))
+                         .andThen(commands2.cmd.run(lambda: self.robotDrive.OnlyBackRight())
+                         .raceWith(commands2.WaitCommand(.4)))
+                         )
+        self.driverController.b().onTrue(OnlyBackRight)
+
+        
+
+
+        

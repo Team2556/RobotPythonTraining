@@ -1,8 +1,11 @@
 
 from math import e
+from turtle import left
+import phoenix5
+from phoenix5 import Unmanaged 
 import wpilib
 import wpilib.simulation
-from wpilib.simulation import (DifferentialDrivetrainSim,
+from wpilib.simulation import (#DifferentialDrivetrainSim,
                                EncoderSim,
                                XboxControllerSim,
                                  AnalogGyroSim,
@@ -45,9 +48,25 @@ class PhysicsEngine:
         self.physics_controller = physics_controller
         self.robot = robot
         
+        self.sim_drivtrain = self.robot.robotDrive
+        SmartDashboard.putData("imported drivetrain", self.sim_drivtrain)
+        self.sim_created_drivtrain = wpimath.kinematics.MecanumDriveKinematics(Translation2d(.25,-.25),
+                                                                               Translation2d(.25,.25),
+                                                                               Translation2d(-.25,-.25),
+                                                                                 Translation2d(-.25,.25))
+        # self.sim_frontLeftMotor = self.sim_drivtrain.sim_frontLeftMotor
+        self.sim_frontLeftMotor = self.sim_drivtrain.frontLeftMotor.getSimCollection()
+        self.sim_frontRightMotor = self.sim_drivtrain.frontRightMotor.getSimCollection()
+        self.sim_backLeftMotor = self.sim_drivtrain.backLeftMotor.getSimCollection()
+        self.sim_backRightMotor = self.sim_drivtrain.backRightMotor.getSimCollection()
+
+        
+
+        # SmartDashboard.putData("sim created drivetrain", self.sim_created_drivtrain)
 
 
-        plant_sim_2_2_2 = LinearSystemId.identifyDrivetrainSystem(
+
+        '''plant_sim_2_2_2 = LinearSystemId.identifyDrivetrainSystem(
             1.98,  # V per rad/s
             0.2,  # V per rad/s^2
             1.5,  # V per m/s
@@ -90,11 +109,24 @@ class PhysicsEngine:
             gearingRatio=7.29,  # gear ratio # 60.0,  # robot mass in kg
             wheelRadius=0.7112,  # wheel radius in meters
             # measurementStdDevs=[0.0, 0.0]
-            )  # standard measurement noise
+            )  # standard measurement noise'''
         
         
     def update_sim(self,now, tm_diff):
-        encoder_fl = self.frontLeftMotor.getEncoder()
+        Unmanaged.feedEnable(20 * 2)
+        frontLeftMotor_volts = self.sim_frontLeftMotor.getMotorOutputLeadVoltage() 
+        SmartDashboard.putNumber("frontLeftMotor_speed", frontLeftMotor_volts)
+        frontRightMotor_volts = self.sim_frontRightMotor.getMotorOutputLeadVoltage()
+        SmartDashboard.putNumber("frontRightMotor_speed", frontRightMotor_volts)
+        backLeftMotor_volts = self.sim_backLeftMotor.getMotorOutputLeadVoltage()
+        SmartDashboard.putNumber("backLeftMotor_speed", backLeftMotor_volts)
+        backRightMotor_volts = self.sim_backRightMotor.getMotorOutputLeadVoltage()
+        SmartDashboard.putNumber("backRightMotor_speed", backRightMotor_volts)
+        
+        # self.sim_created_drivtrain 
+        # MecanumDriveWheelSpeeds(self.sim_created_drivtrain )
+        pass
+        '''encoder_fl = self.frontLeftMotor.getEncoder()
         encoder_fr = self.frontRightMotor.getEncoder()  
         # encoder_bl = self.backLeftMotor.getEncoder()
         # encoder_br = self.backRightMotor.getEncoder()
@@ -125,5 +157,5 @@ class PhysicsEngine:
                                                 #     chasisSpeeds.vy,
                                                 #     chasisSpeeds.omega,
                                                 #     0.02
-                                                # )
+                                                # )'''
         ...

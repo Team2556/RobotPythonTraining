@@ -16,8 +16,13 @@
       "/SmartDashboard/SafeAndArm": "Subsystem",
       "/SmartDashboard/Scheduler": "Scheduler",
       "/SmartDashboard/SendableChooser[0]": "String Chooser",
+      "/SmartDashboard/backLeftMotor": "Motor Controller",
+      "/SmartDashboard/backRightMotor": "Motor Controller",
       "/SmartDashboard/drive type?": "MecanumDrive",
-      "/SmartDashboard/front left motor": "Motor Controller"
+      "/SmartDashboard/front left motor": "Motor Controller",
+      "/SmartDashboard/frontLeftMotor": "Motor Controller",
+      "/SmartDashboard/frontRightMotor": "Motor Controller",
+      "/SmartDashboard/imported drivetrain": "Subsystem"
     }
   },
   "NetworkTables": {

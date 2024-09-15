@@ -1,129 +1,15 @@
 <xml version="1.0">
 <dashboard>
-	<widget field="Back Left Motor - data" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.SimpleDial">
-		<location x="330" y="274"/>
-		<width>100</width>
-		<height>68</height>
-		<property name="Upper Limit" value="1.0"/>
-		<property name="Lower Limit" value="-1.0"/>
-		<property name="Tick Interval" value="0.01"/>
-	</widget>
-	<widget field="Back Right Motor - data" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.SimpleDial">
-		<location x="413" y="272"/>
-		<width>96</width>
-		<height>68</height>
-		<property name="Upper Limit" value="1.0"/>
-		<property name="Lower Limit" value="-1.0"/>
-		<property name="Tick Interval" value="0.01"/>
-	</widget>
-	<widget field="Front Right Motor - data" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.SimpleDial">
-		<location x="417" y="200"/>
-		<width>92</width>
-		<height>68</height>
-		<property name="Upper Limit" value="1.0"/>
-		<property name="Lower Limit" value="-1.0"/>
-		<property name="Tick Interval" value="0.01"/>
-	</widget>
-	<widget field="front left Motor - data get" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.SimpleDial">
-		<location x="321" y="198"/>
-		<width>113</width>
-		<height>71</height>
-		<property name="Upper Limit" value="1.0"/>
-		<property name="Lower Limit" value="-1.0"/>
-		<property name="Tick Interval" value="0.01"/>
-	</widget>
-	<widget field="Get RightX of controller" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="0" y="628"/>
-	</widget>
-	<widget field="omega axis from left trigger read in driving" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="0" y="608"/>
-	</widget>
-	<widget field="Y  axis of controller input read in driving" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="0" y="543"/>
-	</widget>
-	<widget field="X axis of controller input read in driving" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="0" y="523"/>
-	</widget>
-	<widget field="update SIM chasis speed omega" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="0" y="503"/>
-	</widget>
-	<widget field="update SIM chasis speed vy" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="0" y="483"/>
-	</widget>
-	<widget field="update SIM chasis speed vx" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="0" y="463"/>
-	</widget>
-	<widget field="SIM-front left encoder distance" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="0" y="383"/>
-	</widget>
-	<widget field="front left encoder distance" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="0" y="363"/>
-	</widget>
-	<widget field="xbox left x" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="0" y="303"/>
-	</widget>
-	<widget field="front left X controler in the drive execute" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="0" y="343"/>
-	</widget>
-	<widget field="dive by control init" type="String" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="0" y="323"/>
-	</widget>
-	<widget field="front left motor" type="Motor Controller" class="edu.wpi.first.smartdashboard.livewindow.elements.SpeedController">
-		<location x="95" y="125"/>
-	</widget>
-	<widget field="Pose Rotation" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="0" y="230"/>
-	</widget>
-	<widget field="Pose Y" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="0" y="210"/>
-	</widget>
-	<widget field="Pose X" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="0" y="190"/>
-	</widget>
-	<widget field="SendableChooser[0]" type="String Chooser" class="edu.wpi.first.smartdashboard.gui.elements.Chooser">
-		<location x="0" y="67"/>
-	</widget>
-	<widget field="Cannon" type="Subsystem" class="edu.wpi.first.smartdashboard.gui.elements.Subsystem">
-		<location x="292" y="52"/>
-		<width>200</width>
-	</widget>
-	<widget field="Scheduler" type="Scheduler" class="edu.wpi.first.smartdashboard.gui.elements.Scheduler">
-		<location x="0" y="33"/>
-	</widget>
-	<widget field="SafeAndArm" type="Subsystem" class="edu.wpi.first.smartdashboard.gui.elements.Subsystem">
-		<location x="286" y="81"/>
-		<width>208</width>
-	</widget>
-	<widget field="Drivetrain" type="Subsystem" class="edu.wpi.first.smartdashboard.gui.elements.Subsystem">
-		<location x="290" y="107"/>
-		<width>208</width>
-	</widget>
-	<widget field="Gyro" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="0" y="696"/>
-	</widget>
-	<widget field="Back Right Encoder" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="0" y="676"/>
-	</widget>
-	<widget field="Back Left Encoder" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="0" y="656"/>
-	</widget>
-	<widget field="Front Right Encoder" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="0" y="588"/>
-	</widget>
-	<widget field="Front Left Encoder" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="0" y="568"/>
-	</widget>
-	<widget field="Armed" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="1" y="283"/>
-	</widget>
-	<widget field="Safe" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="0" y="258"/>
-	</widget>
 	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.ConnectionIndicator">
 		<location x="0" y="0"/>
 	</static-widget>
 </dashboard>
 <live-window>
 </live-window>
+	<hidden field="SendableChooser[0]"/>
+	<hidden field="xbox left x"/>
 	<hidden field="Field"/>
+	<hidden field="front left motor"/>
+	<hidden field="Scheduler"/>
+	<hidden field="Back Left Motor - data"/>
 </xml>

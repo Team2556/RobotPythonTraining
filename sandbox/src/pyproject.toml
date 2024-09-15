@@ -12,7 +12,8 @@ authors = [
 dependencies = [
     "wpilib", #really need?
     "robotpy",
-    "mypy"
+    "mypy",
+    # could not find "ctre",
 ]
 
 [tool.pytest.ini_options]
@@ -34,7 +35,7 @@ robotpy_extras = [
     # "cscore",
     # "navx",
     # "pathplannerlib",
-    # "phoenix5",
+    "phoenix5",
     # "phoenix6",
     # "photonvision",
     # "playingwithfusion",
@@ -44,18 +45,18 @@ robotpy_extras = [
     # "xrp",
 ]
 
-# Other pip packages to install
+# Other pip packages to install on the roboRIO
 requires = [
     'numpy',
     #'scipy'
     # 'pynetworktables',
-    # 'pyfrc',
+    'pyfrc',
     # 'robotpy-hal-sim',
-    # 'robotpy-wpilib',
-    # 'robotpy-wpiutil',
-    # 'robotpy-ctre',
-    # 'robotpy-rev',
-    
+    #'robotpy-wpilib',
+    #'robotpy-wpiutil',
+    #'robotpy-ctre',
+    #'robotpy-rev',
+        
     # 'xarray',
 
 ]

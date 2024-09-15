@@ -1,161 +1,177 @@
+'''
+Asked github copilot to generate a physics.py file for me. This file is used to simulate the robot in the pyfrc simulator.
+Here's a detailed pseudocode plan:
 
-from math import e
-from turtle import left
-import phoenix5
-from phoenix5 import Unmanaged 
+Import necessary modules:
+
+Import wpilib, wpilib.simulation, and robotpy.
+Initialize the simulation components:
+
+Define the __init__ method.
+Initialize the motor controllers.
+Initialize the drivetrain simulation.
+Update the simulation:
+
+Define the update_sim method.
+Update motor voltages.
+Simulate the drivetrain using the motor voltages.
+Update the SmartDashboard with the motor voltages.
+'''
+
+
+from asyncio import constants
+import pyfrc.mains
+import pyfrc.physics.drivetrains
+import pyfrc.physics.motor_cfgs
+import pyfrc.util
 import wpilib
+from wpilib import SmartDashboard
+from wpilib.simulation import (PWMSim, AnalogGyroSim,)
+from wpilib.drive import MecanumDrive
 import wpilib.simulation
-from wpilib.simulation import (#DifferentialDrivetrainSim,
-                               EncoderSim,
-                               XboxControllerSim,
-                                 AnalogGyroSim,
-                                 
-                               )
-from wpilib import (AnalogGyro, SmartDashboard, Field2d)
-import wpimath.controller
-from wpimath.kinematics import (MecanumDriveWheelSpeeds,
-                                MecanumDriveKinematics,
+from wpimath.kinematics import (MecanumDriveKinematics,
+                                MecanumDriveKinematicsBase,
                                 MecanumDriveOdometry,
+                                MecanumDriveOdometryBase,
                                 MecanumDriveWheelPositions,
-                                DifferentialDriveKinematics,
-                                DifferentialDriveOdometry,
-                                DifferentialDriveWheelSpeeds,
-                                DifferentialDriveWheelPositions,
-                                )
-import wpimath
+                                MecanumDriveWheelSpeeds,)
 from wpimath.geometry import (Pose2d, Rotation2d, Translation2d)
+from wpimath.estimator import MecanumDrivePoseEstimator 
+# from robotpy_ext.common_drivers import navx
+from constants import (DriveConstant, OIConstant)
 
-
-from pyfrc.physics.core import PhysicsInterface
-from pyfrc.physics.drivetrains import MecanumDrivetrain
-# from pyfrc.physics import motor_cfgs
-import wpimath.kinematics
-from wpimath.system.plant import DCMotor
-
-from wpimath.system.plant import LinearSystemId
-
-import rev
-from constants import DriveConstant
 
 class PhysicsEngine:
-    '''
-    start by simulating a sparkmax connected diff drive
-    then change to mechanum drive
-    '''
-    def __init__(self, physics_controller: PhysicsInterface, robot: "MyRobot"): # type: ignore
-        self.field = Field2d()
-        SmartDashboard.putData("Field", self.field)
+    def __init__(self, physics_controller, robot: "MyRobot"): # type: ignore
         self.physics_controller = physics_controller
-        self.robot = robot
-        
-        self.sim_drivtrain = self.robot.robotDrive
-        SmartDashboard.putData("imported drivetrain", self.sim_drivtrain)
-        self.sim_created_drivtrain = wpimath.kinematics.MecanumDriveKinematics(Translation2d(.25,-.25),
-                                                                               Translation2d(.25,.25),
-                                                                               Translation2d(-.25,-.25),
-                                                                                 Translation2d(-.25,.25))
-        # self.sim_frontLeftMotor = self.sim_drivtrain.sim_frontLeftMotor
-        self.sim_frontLeftMotor = self.sim_drivtrain.frontLeftMotor.getSimCollection()
-        self.sim_frontRightMotor = self.sim_drivtrain.frontRightMotor.getSimCollection()
-        self.sim_backLeftMotor = self.sim_drivtrain.backLeftMotor.getSimCollection()
-        self.sim_backRightMotor = self.sim_drivtrain.backRightMotor.getSimCollection()
 
-        
+        # Initialize motor controllers
+        self.frontLeftMotor = wpilib.PWMVictorSPX(DriveConstant.kLeftMotor1Port)
+        self.frontRightMotor = wpilib.PWMVictorSPX(DriveConstant.kRightMotor1Port)
+        self.backLeftMotor = wpilib.PWMVictorSPX(DriveConstant.kLeftMotor2Port)
+        self.backRightMotor = wpilib.PWMVictorSPX(DriveConstant.kRightMotor2Port)
 
-        # SmartDashboard.putData("sim created drivetrain", self.sim_created_drivtrain)
+        # Initialize motor simulations
+        # pyfrc.physics.drivetrains.MecanumDrivetrain
+        # self.sim_frontLeftMotor = robot.robotDrive.frontLeftMotor.getSimCollection()
+        self.sim_frontLeftMotor = PWMSim(DriveConstant.kLeftMotor1Port)
+        self.sim_frontRightMotor = PWMSim(DriveConstant.kRightMotor1Port)
+        self.sim_backLeftMotor = PWMSim(DriveConstant.kLeftMotor2Port)
+        self.sim_backRightMotor = PWMSim(DriveConstant.kRightMotor2Port)
 
+        # Initialize the drivetrain
+        # self.sim_frontRightMotor.setInverted(True)
+        # self.sim_backRightMotor.setInverted(True)
+        self.drivetrain = MecanumDrive(self.frontLeftMotor, self.backLeftMotor,
+                                       self.frontRightMotor, self.backRightMotor)
 
+        # Initialize the gyro
+        # self.gyro = AnalogGyroSim()#navx.AHRS.create_spi()
 
-        '''plant_sim_2_2_2 = LinearSystemId.identifyDrivetrainSystem(
-            1.98,  # V per rad/s
-            0.2,  # V per rad/s^2
-            1.5,  # V per m/s
-            0.3,  # V per m/s^2
+        #initialize the Xbox conroller
+        self.Drivercontroller = wpilib.XboxController(OIConstant.kDriver1ControllerPort)
+
+    def update_sim(self, now, tm_diff):
+
+        # Update motor voltages
+        sim_frontLeftMotor_speed = self.sim_frontLeftMotor.getSpeed() #* 12
+        sim_frontRightMotor_speed = self.sim_frontRightMotor.getSpeed()# * 12
+        sim_backLeftMotor_speed = self.sim_backLeftMotor.getSpeed() #* 12
+        sim_backRightMotor_speed = self.sim_backRightMotor.getSpeed() #* 12
+        # Update the SmartDashboard with motor voltages
+        SmartDashboard.putNumber("frontLeftMotor_speed SIM", sim_frontLeftMotor_speed)
+        SmartDashboard.putNumber("frontRightMotor_speed SIM", sim_frontRightMotor_speed)
+        SmartDashboard.putNumber("backLeftMotor_speed SIM", sim_backLeftMotor_speed)
+        SmartDashboard.putNumber("backRightMotor_speed SIM", sim_backRightMotor_speed)
+
+        # Update motor voltages
+        frontLeftMotor_speed = self.sim_frontLeftMotor.getSpeed() #* 12
+        frontRightMotor_speed = self.sim_frontRightMotor.getSpeed()# * 12
+        backLeftMotor_speed = self.sim_backLeftMotor.getSpeed() #* 12
+        backRightMotor_speed = self.sim_backRightMotor.getSpeed() #* 12
+        # Update the SmartDashboard with motor voltages
+        SmartDashboard.putNumber("frontLeftMotor_speed", frontLeftMotor_speed)
+        SmartDashboard.putNumber("frontRightMotor_speed", frontRightMotor_speed)
+        SmartDashboard.putNumber("backLeftMotor_speed", backLeftMotor_speed)
+        SmartDashboard.putNumber("backRightMotor_speed", backRightMotor_speed)
+
+        # Simulate the drivetrain
+        self.drivetrain.driveCartesian(-self.Drivercontroller.getLeftY(),
+                                       -self.Drivercontroller.getRightX(),
+                                       -self.Drivercontroller.getRightY())  # Replace with actual control inputs
+        # subsystem used: self.robotDrive.driveCartesian(-joystick.getLeftY(), -joystick.getRightX(), -joystick.getLeftX(), Rotation2d(0))
+        # Update the odometry based on the simulated wheel speeds
+        wheel_speeds = MecanumDriveWheelSpeeds(
+            self.sim_frontLeftMotor.getSpeed(),
+            self.sim_frontRightMotor.getSpeed(),
+            self.sim_backLeftMotor.getSpeed(),
+            self.sim_backRightMotor.getSpeed()
         )
-        plant_sim_2_1_2 = LinearSystemId.DCMotorSystem(kV=2.0, kA=0.2)
 
-        # generic_motor_sim = DCMotor( # CIM motor
-        #     2.42,  # resistance
-        #     2.0,  # voltage
-        #     0.2,  # kv
-        #     0.0,  # ka
-        #     1.0  # gear ratio
+        # Create an odometry object
+        drivtrain_kinematics = MecanumDriveKinematics(
+                Translation2d(DriveConstant.kWheelBase / 2, DriveConstant.kTrackWidth / 2),
+                Translation2d(DriveConstant.kWheelBase / 2, -DriveConstant.kTrackWidth / 2),
+                Translation2d(-DriveConstant.kWheelBase / 2, DriveConstant.kTrackWidth / 2),
+                Translation2d(-DriveConstant.kWheelBase / 2, -DriveConstant.kTrackWidth / 2)
+            )
+        chassis_speeds = drivtrain_kinematics.toChassisSpeeds(wheel_speeds)
+        # Update the simulation with the chassis speeds
+        vx = chassis_speeds.vx
+        SmartDashboard.putNumber("vx", vx)
+        vy = chassis_speeds.vy
+        SmartDashboard.putNumber("vy", vy)
+        omega = chassis_speeds.omega
+        SmartDashboard.putNumber("omega", omega)
+
+        # Update the physics controller with the new state
+        self.physics_controller.drive(chassis_speeds, tm_diff)
+
+'''
+ def drive(self, speeds: ChassisSpeeds, tm_diff: float) -> Pose2d:
+        """Call this from your :func:`PhysicsEngine.update_sim` function.
+        Will update the robot's position on the simulation field.
+
+        You can either calculate the chassis speeds yourself, or you
+        can use the predefined functions in :mod:`pyfrc.physics.drivetrains`.
+
+        The outputs of the `drivetrains.*` functions should be passed
+        to this function.
+
+        :param speeds:   Represents current speed/angle of robot travel
+        :param tm_diff:  Amount of time speed was traveled (this is the
+                         same value that was passed to update_sim)
+
+        :return: current robot pose
+
+        .. versionchanged:: 2020.1.0
+           Input parameter is ChassisSpeeds object
+        """    
+
+
+
+        odometry = MecanumDriveOdometry(
+            drivtrain_kinematics,
+            Rotation2d(0),
+            drivtrain_kinematics.getFrontLeft WheelPosition(),
+        )
+
+        # Update the odometry with the current wheel speeds and gyro angle
+        odometry.update(Rotation2d(0), wheel_speeds)
+
+        # Get the new pose of the robot
+        new_pose = odometry.getPose()
+        SmartDashboard.putData("Odometry", new_pose)
+
+        # Update the physics controller with the new state
+        self.physics_controller.move_robot(new_pose, tm_diff)
+        
+        # MecanumDriveOdometryBase.getPose(
+        #     MecanumDriveOdometryBase(
+        #         MecanumDriveKinematicsBase(self.drivetrain. ),
+        #         Rotation2d(0),
+        #         Pose2d(Translation2d(0,0), Rotation2d(0))
+        #     ),
         # )
-        # DC_motor_param = dict( # CIM motor
-        #     plant = plant_sim_2_1_2,
-        #     gearbox = DCMotor.CIM(2) #generic_motor_sim,
-        #     gearing = 1.0,  # gear ratio
-        #     measurementStdDevs = [0,0]
-        #     # 2.42,  # resistance
-        #     # 2.0,  # voltage
-        #     # 0.2,  # kv
-        #     # 0.0,  # ka
-        # )
-        self.frontLeftMotor = robot.frontLeftMotor# rev.CANSparkMax(DriveConstant.kLeftMotor1Port, rev.CANSparkMax.MotorType.kBrushless) 
-        # self.leftDrive = rev.CANSparkMax(DriveConstant.kLeftMotor2Port, rev.CANSparkMax.MotorType.kBrushless)
-        self.frontRightMotor = robot.frontRightMotor #rev.CANSparkMax(DriveConstant.kRightMotor1Port, rev.CANSparkMax.MotorType.kBrushless)
-        # self.rightDrive = rev.CANSparkMax(DriveConstant.kRightMotor2Port, rev.CANSparkMax.MotorType.kBrushless)
-        
-        #wpilib.simulation.DCMotorSim(**DC_motor_param) # .SimDeviceSim("SPARK MAX", 1)
-        # self.frontRightMotor = wpilib.simulation.SimDeviceSim("SPARK MAX", 2)
-        # self.backLeftMotor = wpilib.simulation.SimDeviceSim("SPARK MAX", 3)
-        # self.backRightMotor = wpilib.simulation.SimDeviceSim("SPARK MAX", 4)
-
-
-        self.drivetrain = DifferentialDrivetrainSim(
-            plant=plant_sim_2_2_2 ,# ._controls._controls.system.LinearSystem_2_2_2,
-            trackWidth=0.7112,  # track width in meters
-            driveMotor=DCMotor.CIM(2),#generic_motor_sim,  # 2 CIM motors
-            gearingRatio=7.29,  # gear ratio # 60.0,  # robot mass in kg
-            wheelRadius=0.7112,  # wheel radius in meters
-            # measurementStdDevs=[0.0, 0.0]
-            )  # standard measurement noise'''
-        
-        
-    def update_sim(self,now, tm_diff):
-        Unmanaged.feedEnable(20 * 2)
-        frontLeftMotor_volts = self.sim_frontLeftMotor.getMotorOutputLeadVoltage() 
-        SmartDashboard.putNumber("frontLeftMotor_speed", frontLeftMotor_volts)
-        frontRightMotor_volts = self.sim_frontRightMotor.getMotorOutputLeadVoltage()
-        SmartDashboard.putNumber("frontRightMotor_speed", frontRightMotor_volts)
-        backLeftMotor_volts = self.sim_backLeftMotor.getMotorOutputLeadVoltage()
-        SmartDashboard.putNumber("backLeftMotor_speed", backLeftMotor_volts)
-        backRightMotor_volts = self.sim_backRightMotor.getMotorOutputLeadVoltage()
-        SmartDashboard.putNumber("backRightMotor_speed", backRightMotor_volts)
-        
-        # self.sim_created_drivtrain 
-        # MecanumDriveWheelSpeeds(self.sim_created_drivtrain )
-        pass
-        '''encoder_fl = self.frontLeftMotor.getEncoder()
-        encoder_fr = self.frontRightMotor.getEncoder()  
-        # encoder_bl = self.backLeftMotor.getEncoder()
-        # encoder_br = self.backRightMotor.getEncoder()
-
-        self.drivetrain.setInputs(1,1)
-        chasisSpeed_left = self.drivetrain.getLeftVelocity()
-        chasisSpeed_right = self.drivetrain.getRightVelocity()
-
-        # Create a simulated gyroscope
-        self.gyro = AnalogGyroSim# wpilib.simulation.AnalogGyroSim(AnalogGyro)
-
-        # Update the simulated gyroscope with the current heading
-        self.gyro.setAngle(self.gyro(),angle=self.drivetrain.getHeading().degrees())
-
-        # Convert wheel speeds to chassis speeds
-        chassis_speeds = wpimath.kinematics.ChassisSpeeds.fromRobotRelativeSpeeds(
-            vx=chasisSpeed_left, vy=chasisSpeed_right, omega=0, robot_heading=self.gyro.getAngle())
-        
-        # chasisSpeeds = 
-        # .calculate(
-        #     encoder_fl,
-        #     # self.backLeftMotor.getSpeed(),
-        #     encoder_fr,
-        #     # self.backRightMotor.getSpeed(),
-        #     tm_diff)
-        pose = self.physics_controller.drive(speeds= chassis_speeds, tm_diff=tm_diff)#chasisSpeed_left,chasisSpeed_right,tm_diff=tm_diff)
-                                                #  .vx,
-                                                #     chasisSpeeds.vy,
-                                                #     chasisSpeeds.omega,
-                                                #     0.02
-                                                # )'''
-        ...
+        # Update the physics controller with the new state
+        # self.physics_controller.move_robot(self.drivetrain, tm_diff)'''

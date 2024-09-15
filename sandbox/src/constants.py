@@ -78,6 +78,8 @@ class DriveConstant:
     kEncoderDistancePerPulse = 1
     kMaxOutput = .9123
     kDeadband = .1
+    kWheelBase = 1.111 # meters
+    kTrackWidth = 1.112 # meters
 
 class OIConstant:
     kDriver1ControllerPort = 0

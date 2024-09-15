@@ -45,13 +45,15 @@ class DriveTrain(commands2.Subsystem):
         # We need to invert one side of the drivetrain so that positive voltages
         # result in both sides moving forward. Depending on how your robot's
         # gearbox is constructed, you might have to invert the left side instead.
-        self.frontRightMotor.setInverted(True)
-        self.backRightMotor.setInverted(True)
+        
+        # TODO: is it juet sim or do these not need to be inverted?
+        # self.frontRightMotor.setInverted(True)
+        # self.backRightMotor.setInverted(True)
 
 
     def driveWithJoystick(self, joystick: wpilib.Joystick):
         """Drives the robot using the joystick"""
-        self.robotDrive.driveCartesian(-joystick.getLeftY(), -joystick.getRightX(), -joystick.getLeftX(), Rotation2d(0))
+        self.robotDrive.driveCartesian(-joystick.getLeftY(), -joystick.getLeftTriggerAxis(), -joystick.getLeftX(), Rotation2d(0))
     def slowLeft(self,joystick: wpilib.Joystick) -> None:
         self.robotDrive.driveCartesian(0, 0, -.22, Rotation2d(0))
     def slowRight(self,joystick: wpilib.Joystick) -> None:

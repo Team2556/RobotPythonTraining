@@ -39,31 +39,50 @@ from wpimath.geometry import (Pose2d, Rotation2d, Translation2d)
 from wpimath.estimator import MecanumDrivePoseEstimator 
 # from robotpy_ext.common_drivers import navx
 from constants import (DriveConstant, OIConstant)
+from phoenix6.unmanaged import feed_enable
 
 
 class PhysicsEngine:
     def __init__(self, physics_controller, robot: "MyRobot"): # type: ignore
         self.physics_controller = physics_controller
+        self.robot = robot
+        self.robotDrive = robot.robotDrive
 
         # Initialize motor controllers
-        self.frontLeftMotor = wpilib.PWMVictorSPX(DriveConstant.kLeftMotor1Port)
-        self.frontRightMotor = wpilib.PWMVictorSPX(DriveConstant.kRightMotor1Port)
-        self.backLeftMotor = wpilib.PWMVictorSPX(DriveConstant.kLeftMotor2Port)
-        self.backRightMotor = wpilib.PWMVictorSPX(DriveConstant.kRightMotor2Port)
+        self.right_invert_YN = robot.robotDrive.right_invert_YN
+
+        # TODO: try converting all motors to refer to the robot's motors
+        self.frontLeftMotor = robot.robotDrive.frontLeftMotor.getSimCollection()
+        self.frontRightMotor = robot.robotDrive.frontRightMotor.getSimCollection()
+        # self.frontRightMotor.setInverted(self.right_invert_YN) sim colletion has no set inverted
+        self.backLeftMotor = robot.robotDrive.backLeftMotor.getSimCollection()
+        self.backRightMotor = robot.robotDrive.backRightMotor.getSimCollection()
+        # self.backRightMotor.setInverted(self.right_invert_YN)
+
+        # self.frontLeftMotor =wpilib.PWMVictorSPX(DriveConstant.kLeftMotor1Port)
+        # self.frontRightMotor = wpilib.PWMVictorSPX(DriveConstant.kRightMotor1Port)
+        # self.frontRightMotor.setInverted(self.right_invert_YN) 
+        # self.backLeftMotor = wpilib.PWMVictorSPX(DriveConstant.kLeftMotor2Port)
+        # self.backRightMotor = wpilib.PWMVictorSPX(DriveConstant.kRightMotor2Port)
+        # self.backRightMotor.setInverted(self.right_invert_YN)
 
         # Initialize motor simulations
         # pyfrc.physics.drivetrains.MecanumDrivetrain
         # self.sim_frontLeftMotor = robot.robotDrive.frontLeftMotor.getSimCollection()
-        self.sim_frontLeftMotor = PWMSim(DriveConstant.kLeftMotor1Port)
-        self.sim_frontRightMotor = PWMSim(DriveConstant.kRightMotor1Port)
-        self.sim_backLeftMotor = PWMSim(DriveConstant.kLeftMotor2Port)
-        self.sim_backRightMotor = PWMSim(DriveConstant.kRightMotor2Port)
+        # self.sim_frontLeftMotor =  PWMSim(DriveConstant.kLeftMotor1Port)
+        # self.sim_frontRightMotor = PWMSim(DriveConstant.kRightMotor1Port)
+        # self.sim_backLeftMotor = PWMSim(DriveConstant.kLeftMotor2Port)
+        # self.sim_backRightMotor = PWMSim(DriveConstant.kRightMotor2Port)
 
         # Initialize the drivetrain
         # self.sim_frontRightMotor.setInverted(True)
         # self.sim_backRightMotor.setInverted(True)
-        self.drivetrain = MecanumDrive(self.frontLeftMotor, self.backLeftMotor,
-                                       self.frontRightMotor, self.backRightMotor)
+        
+        
+        # self.drivetrain = MecanumDrive(frontLeftMotor=self.frontLeftMotor, 
+        #                                rearLeftMotor=self.backLeftMotor,
+        #                                frontRightMotor=self.frontRightMotor, 
+        #                                rearRightMotor=self.backRightMotor)
 
         # Initialize the gyro
         # self.gyro = AnalogGyroSim()#navx.AHRS.create_spi()
@@ -72,41 +91,81 @@ class PhysicsEngine:
         self.Drivercontroller = wpilib.XboxController(OIConstant.kDriver1ControllerPort)
 
     def update_sim(self, now, tm_diff):
+        # Currently, the Python API for CTRE doesn't automatically detect the the
+        # Sim driverstation status and enable the signals. So, for now, manually
+        # feed the enable signal for double the set robot period.
+        feed_enable(0.020 * 2)
+
+        # self.frontRightMotor.setInverted(self.right_invert_YN )
+        # self.backRightMotor.setInverted(self.right_invert_YN )
+        # Update the SmartDashboard with the motor inversion status - hopefully allow change from SmartDashboard
+        # SmartDashboard.putBoolean("Simmulated right inverstion?", self.right_invert_YN)
+        # Update motor voltages
+        # sim_frontLeftMotor_speed = self.sim_frontLeftMotor.getSpeed() #* 12
+        # sim_frontRightMotor_speed = self.sim_frontRightMotor.getSpeed()# * 12
+        # sim_backLeftMotor_speed = self.sim_backLeftMotor.getSpeed() #* 12
+        # sim_backRightMotor_speed = self.sim_backRightMotor.getSpeed() #* 12
+        # # Update the SmartDashboard with motor voltages
+        # SmartDashboard.putNumber("frontLeftMotor_speed SIM", sim_frontLeftMotor_speed)
+        # SmartDashboard.putNumber("frontRightMotor_speed SIM", sim_frontRightMotor_speed)
+        # SmartDashboard.putNumber("backLeftMotor_speed SIM", sim_backLeftMotor_speed)
+        # SmartDashboard.putNumber("backRightMotor_speed SIM", sim_backRightMotor_speed)
 
         # Update motor voltages
-        sim_frontLeftMotor_speed = self.sim_frontLeftMotor.getSpeed() #* 12
-        sim_frontRightMotor_speed = self.sim_frontRightMotor.getSpeed()# * 12
-        sim_backLeftMotor_speed = self.sim_backLeftMotor.getSpeed() #* 12
-        sim_backRightMotor_speed = self.sim_backRightMotor.getSpeed() #* 12
-        # Update the SmartDashboard with motor voltages
-        SmartDashboard.putNumber("frontLeftMotor_speed SIM", sim_frontLeftMotor_speed)
-        SmartDashboard.putNumber("frontRightMotor_speed SIM", sim_frontRightMotor_speed)
-        SmartDashboard.putNumber("backLeftMotor_speed SIM", sim_backLeftMotor_speed)
-        SmartDashboard.putNumber("backRightMotor_speed SIM", sim_backRightMotor_speed)
+        frontLeftMotor_speed = self.frontLeftMotor.getMotorOutputLeadVoltage() /12 #assuming 12 volts for now
+        SmartDashboard.putNumber("frontLeftMotor_SIM getmotorOutput Volts by 12Volts", frontLeftMotor_speed)
+        frontRightMotor_speed = self.frontRightMotor.getMotorOutputLeadVoltage() / (12*(1-2*self.right_invert_YN))
+        SmartDashboard.putNumber("frontRightMotor_SIM getmotorOutput Volts by 12Volts", frontRightMotor_speed)
+        backLeftMotor_speed = self.backLeftMotor.getMotorOutputLeadVoltage() /12
+        SmartDashboard.putNumber("backLeftMotor_SIM getmotorOutput Volts by 12Volts", backLeftMotor_speed)
+        backRightMotor_speed = self.backRightMotor.getMotorOutputLeadVoltage() / (12*(1-2*self.right_invert_YN))
+        SmartDashboard.putNumber("backRightMotor_SIM getmotorOutput Volts by 12Volts", backRightMotor_speed)
 
-        # Update motor voltages
-        frontLeftMotor_speed = self.sim_frontLeftMotor.getSpeed() #* 12
-        frontRightMotor_speed = self.sim_frontRightMotor.getSpeed()# * 12
-        backLeftMotor_speed = self.sim_backLeftMotor.getSpeed() #* 12
-        backRightMotor_speed = self.sim_backRightMotor.getSpeed() #* 12
+        '''
+        frontRightMotor_speed = self.frontRightMotor.getSpeed()# * 12
+        backLeftMotor_speed = self.backLeftMotor.getSpeed() #* 12
+        backRightMotor_speed = self.backRightMotor.getSpeed() #* 12
         # Update the SmartDashboard with motor voltages
         SmartDashboard.putNumber("frontLeftMotor_speed", frontLeftMotor_speed)
         SmartDashboard.putNumber("frontRightMotor_speed", frontRightMotor_speed)
         SmartDashboard.putNumber("backLeftMotor_speed", backLeftMotor_speed)
         SmartDashboard.putNumber("backRightMotor_speed", backRightMotor_speed)
-
+        '''
+        # what is coming through the drivetrain?
         # Simulate the drivetrain
+        # wheel_speeds =self.robotDrive.share_wheel_speeds
+        '''
         self.drivetrain.driveCartesian(-self.Drivercontroller.getLeftY(),
                                        -self.Drivercontroller.getRightX(),
-                                       -self.Drivercontroller.getRightY())  # Replace with actual control inputs
+                                       -self.Drivercontroller.getRightY())  
+        wheel_speeds = self.drivetrain.WheelSpeeds()
+        print("wheel_speeds", wheel_speeds)
+        frontLeftSpeed = wheel_speeds.frontLeft # self.drivetrain.WheelSpeeds().frontLeft
+
+        print("frontLeftSpeed", frontLeftSpeed, '/n ---------------------------------------------- /n')
+        SmartDashboard.putNumber("front left wheelspeed in update sim section", wheel_speeds.frontLeft)#wheel_speeds.frontLeft())
+        SmartDashboard.putNumber("front Right wheelspeed in update sim section", wheel_speeds.frontRight)
+        SmartDashboard.putNumber("back left wheelspeed in update sim section", wheel_speeds.rearLeft)
+        SmartDashboard.putNumber("back right wheelspeed in update sim section", wheel_speeds.rearRight)
+        #
         # subsystem used: self.robotDrive.driveCartesian(-joystick.getLeftY(), -joystick.getRightX(), -joystick.getLeftX(), Rotation2d(0))
         # Update the odometry based on the simulated wheel speeds
+        # wheel_speeds_ifcantpullfromactualrobot = MecanumDriveWheelSpeeds(
+        #     self.sim_frontLeftMotor.getSpeed(),
+        #     self.sim_frontRightMotor.getSpeed(),
+        #     self.sim_backLeftMotor.getSpeed(),
+        #     self.sim_backRightMotor.getSpeed()
+        # )
+
+
+        '''
         wheel_speeds = MecanumDriveWheelSpeeds(
-            self.sim_frontLeftMotor.getSpeed(),
-            self.sim_frontRightMotor.getSpeed(),
-            self.sim_backLeftMotor.getSpeed(),
-            self.sim_backRightMotor.getSpeed()
+            frontLeftMotor_speed,
+            frontRightMotor_speed,
+            backLeftMotor_speed,
+            backRightMotor_speed
         )
+
 
         # Create an odometry object
         drivtrain_kinematics = MecanumDriveKinematics(
@@ -116,6 +175,10 @@ class PhysicsEngine:
                 Translation2d(-DriveConstant.kWheelBase / 2, -DriveConstant.kTrackWidth / 2)
             )
         chassis_speeds = drivtrain_kinematics.toChassisSpeeds(wheel_speeds)
+        # Update the physics controller with the new state
+        self.physics_controller.drive(chassis_speeds, tm_diff)
+
+        '''
         # Update the simulation with the chassis speeds
         vx = chassis_speeds.vx
         SmartDashboard.putNumber("vx", vx)
@@ -124,8 +187,7 @@ class PhysicsEngine:
         omega = chassis_speeds.omega
         SmartDashboard.putNumber("omega", omega)
 
-        # Update the physics controller with the new state
-        self.physics_controller.drive(chassis_speeds, tm_diff)
+        '''
 
 '''
  def drive(self, speeds: ChassisSpeeds, tm_diff: float) -> Pose2d:

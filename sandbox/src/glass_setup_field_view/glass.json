@@ -13,7 +13,21 @@
       "/SmartDashboard/SafeAndArm": "Subsystem",
       "/SmartDashboard/Scheduler": "Scheduler",
       "/SmartDashboard/SendableChooser[0]": "String Chooser",
-      "/SmartDashboard/front left motor": "Motor Controller"
+      "/SmartDashboard/backLeftMotor": "Motor Controller",
+      "/SmartDashboard/backLeftMotor -from drivetrain": "Motor Controller",
+      "/SmartDashboard/backRightMotor": "Motor Controller",
+      "/SmartDashboard/backRightMotor -from drivetrain": "Motor Controller",
+      "/SmartDashboard/drivetrain": "MecanumDrive",
+      "/SmartDashboard/drivetrain init in physics": "MecanumDrive",
+      "/SmartDashboard/drivetrain that pulled into simupdate": "MecanumDrive",
+      "/SmartDashboard/front left motor": "Motor Controller",
+      "/SmartDashboard/frontLeftMotor": "Motor Controller",
+      "/SmartDashboard/frontLeftMotor -from drivetrain": "Motor Controller",
+      "/SmartDashboard/frontRightMotor": "Motor Controller",
+      "/SmartDashboard/frontRightMotor -from drivetrain": "Motor Controller",
+      "/SmartDashboard/imported drivetrain": "Subsystem",
+      "/SmartDashboard/robotDrive -from drivetrain init": "MecanumDrive",
+      "/SmartDashboard/robotDrive -from drivetrain periodic": "MecanumDrive"
     },
     "windows": {
       "/SmartDashboard/Field": {

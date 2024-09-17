@@ -41,10 +41,8 @@ class MyRobot(commands2.TimedCommandRobot):
         # Configure the button bindings
         self.ConfigureButtonBindings()
 
-        self.robotDrive.setDefaultCommand(
-            commands2.cmd.run(lambda: self.robotDrive.driveWithJoystick(self.driverController)
-                              , self.robotDrive)
-                              )
+        self.robotDrive.setDefaultCommand(commands2.cmd.run(lambda: self.robotDrive.driveWithJoystick(self.driverController)
+                                                            , self.robotDrive))
         self.timer = wpilib.Timer()
 
         #region SmartDashboard init

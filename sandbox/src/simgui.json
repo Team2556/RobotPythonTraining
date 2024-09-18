@@ -115,6 +115,9 @@
     "Clients": {
       "open": true
     },
+    "Connections": {
+      "open": true
+    },
     "NT3@127.0.0.1:50289": {
       "open": true
     },

@@ -8,7 +8,7 @@
 import wpilib
 from wpilib import (SmartDashboard, Field2d)
 import wpilib.drive
-import rev
+# import rev
 # from pyfrc.physics.drivetrains import MecanumDrivetrain
 import commands2
 from commands2 import CommandScheduler
@@ -17,9 +17,10 @@ from wpimath.geometry import Translation2d, Rotation2d
 from constants import (DriveConstant,
                        OIConstant,
                        )
-import phoenix5
-import math
+# import phoenix5
+# import math
 from subsystems.drivetrain import DriveTrain
+from subsystems.cannon import Cannon
 
 
 #region Helper functions
@@ -32,24 +33,29 @@ class MyRobot(commands2.TimedCommandRobot):
         should be used for any initialization code.
         """
         CommandScheduler.getInstance().run()
+        self.timer = wpilib.Timer()
         
-
+        #region tie ins
         self.robotDrive = DriveTrain()
+        self.cannon = Cannon()
+
 
         self.driverController = commands2.button.CommandXboxController(
             OIConstant.kDriver1ControllerPort)
         # Configure the button bindings
         self.ConfigureButtonBindings()
 
+        #endregion tie ins
+
         self.robotDrive.setDefaultCommand(commands2.cmd.run(lambda: self.robotDrive.driveWithJoystick(self.driverController)
                                                             , self.robotDrive))
-        self.timer = wpilib.Timer()
+        self.cannon.setDefaultCommand(commands2.cmd.run(lambda: self.cannon.stop(), self.cannon))
 
         #region SmartDashboard init
 
         SmartDashboard.putData(CommandScheduler.getInstance())
         self.field = Field2d()
-        SmartDashboard.putData("Field", self.field)
+        SmartDashboard.putData("Field", self.field) #end up viewing in Glass
         #endregion SmartDashBoard init
 
 
@@ -75,6 +81,12 @@ class MyRobot(commands2.TimedCommandRobot):
 
     def testPeriodic(self):
         """This function is called periodically during test mode."""
+    
+    def end(self):
+        """This function is called once each time the robot enters test mode."""
+        self.robotDrive.driveCartesian(0,0,0,0)
+        self.cannon.stop() #may want to change thsi to let out air??
+        commands2.CommandScheduler.getInstance().cancelAll()
 
     def ConfigureButtonBindings(self):
         self.driverController.povLeft().onTrue(lambda: self.robotDrive.slowLeft(self.driverController))
@@ -84,6 +96,7 @@ class MyRobot(commands2.TimedCommandRobot):
             commands2.cmd.run(lambda: self.robotDrive.OnlyFrontLeft()).raceWith(
                 commands2.WaitCommand(2.2)))
         self.driverController.x().onTrue(OnlyFrontLeft)
+
 
 
         OnlyFrontRight = (commands2.cmd.run(lambda: self.robotDrive.OnlyFrontRight())
@@ -118,6 +131,12 @@ class MyRobot(commands2.TimedCommandRobot):
                          .raceWith(commands2.WaitCommand(.4)))
                          )
         self.driverController.b().onTrue(OnlyBackRight)
+
+        fire_cannon = (commands2.cmd.run(lambda: self.cannon.fire()).raceWith(commands2.WaitCommand(1.2)))
+        #.andThen(commands2.cmd.run(lambda: self.cannon.stop())))  # TODO: do i need to stop the firing? put it in periodic of cannon
+ 
+        self.driverController.rightBumper().onTrue(fire_cannon)
+            
 
         
 

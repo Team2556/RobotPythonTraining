@@ -23,6 +23,16 @@ class Rio_DIO(IntEnum):
     SIXTEEN = auto()
     SEVENTEEN = auto()
 
+class Rio_Pnue(IntEnum):
+    ZERRO = 0
+    ONE = auto()
+    TWO = auto()
+    THREE = auto()
+    FOUR = auto()
+    FIVE = auto()
+    SIX = auto()
+    SEVEN = auto()
+
 
 class Rio_PWM(IntEnum):
     ONE = 0
@@ -67,9 +77,10 @@ class CAN_Address(IntEnum):
 
 #endregion
 class DriveConstant:
+    kIsMecanum = False
     kLeftMotor1Port = CAN_Address.THREE
-    kLeftMotor2Port = CAN_Address.ONE
-    kRightMotor1Port = CAN_Address.FOUR
+    kLeftMotor2Port = CAN_Address.FOUR
+    kRightMotor1Port = CAN_Address.ONE
     kRightMotor2Port = CAN_Address.TWO
     kFrontLeftEncoderPorts = (Rio_DIO.TEN, Rio_DIO.ELEVEN)
     kFrontRightEncoderPorts = (Rio_DIO.TWELVE, Rio_DIO.THIRTEEN)
@@ -87,8 +98,7 @@ class OIConstant:
     kDriver2ControllerPort = 1
 
 
-class ShooterConstant:
-    ...
-
 class CannonConstant:
-    ...
+    kCompressorAddress = CAN_Address.FIVE
+    kRelayAddress = Rio_Relay.ZERO
+    

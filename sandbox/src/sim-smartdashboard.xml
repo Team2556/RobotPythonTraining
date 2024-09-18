@@ -1,5 +1,23 @@
 <xml version="1.0">
 <dashboard>
+	<widget field="cannon status -from cannon: last action" type="String" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="287"/>
+	</widget>
+	<widget field="compressor -from cannon" type="Compressor" class="edu.wpi.first.smartdashboard.livewindow.elements.DigitalOutputController">
+		<location x="0" y="265"/>
+	</widget>
+	<widget field="backRightMotor -from drivetrain" type="Motor Controller" class="edu.wpi.first.smartdashboard.livewindow.elements.SpeedController">
+		<location x="0" y="199"/>
+	</widget>
+	<widget field="backLeftMotor -from drivetrain" type="Motor Controller" class="edu.wpi.first.smartdashboard.livewindow.elements.SpeedController">
+		<location x="0" y="153"/>
+	</widget>
+	<widget field="frontRightMotor -from drivetrain" type="Motor Controller" class="edu.wpi.first.smartdashboard.livewindow.elements.SpeedController">
+		<location x="0" y="107"/>
+	</widget>
+	<widget field="frontLeftMotor -from drivetrain" type="Motor Controller" class="edu.wpi.first.smartdashboard.livewindow.elements.SpeedController">
+		<location x="0" y="33"/>
+	</widget>
 	<widget field="backRightMotor_SIM getmotorOutput Volts by 12Volts" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
 		<location x="181" y="370"/>
 		<height>22</height>
@@ -13,47 +31,8 @@
 	<widget field="frontLeftMotor_SIM getmotorOutput Volts by 12Volts" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
 		<location x="17" y="318"/>
 	</widget>
-	<widget field="backRightMotor -from drivetrain" type="Motor Controller" class="edu.wpi.first.smartdashboard.livewindow.elements.SpeedController">
-		<location x="0" y="573"/>
-	</widget>
-	<widget field="backLeftMotor -from drivetrain" type="Motor Controller" class="edu.wpi.first.smartdashboard.livewindow.elements.SpeedController">
-		<location x="0" y="527"/>
-	</widget>
-	<widget field="frontRightMotor -from drivetrain" type="Motor Controller" class="edu.wpi.first.smartdashboard.livewindow.elements.SpeedController">
-		<location x="0" y="481"/>
-	</widget>
-	<widget field="frontLeftMotor -from drivetrain" type="Motor Controller" class="edu.wpi.first.smartdashboard.livewindow.elements.SpeedController">
-		<location x="0" y="246"/>
-	</widget>
-	<widget field="frontLeftEncoder -from drivetrain" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="0" y="53"/>
-	</widget>
-	<widget field="front left wheelspeed temp not self to periodic of drivetrain" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="-7" y="152"/>
-	</widget>
-	<widget field="front left wheelspeed in periodic section of drivetrain" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="0" y="226"/>
-	</widget>
-	<widget field="backRightMotor -from drivetrain getmotoroutputpercent" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="183" y="666"/>
-	</widget>
-	<widget field="backLeftMotor -from drivetrain getmotoroutputpercent" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="-6" y="642"/>
-	</widget>
-	<widget field="frontRightMotor -from drivetrain getmotoroutputpercent" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="219" y="461"/>
-	</widget>
-	<widget field="frontLeftMotor -from drivetrain getmotoroutputpercent" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="-1" y="437"/>
-	</widget>
-	<widget field="SendableChooser[0]" type="String Chooser" class="edu.wpi.first.smartdashboard.gui.elements.Chooser">
-		<location x="344" y="255"/>
-	</widget>
 	<widget field="Scheduler" type="Scheduler" class="edu.wpi.first.smartdashboard.gui.elements.Scheduler">
 		<location x="0" y="93"/>
-	</widget>
-	<widget field="DriveTrain" type="String" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="0" y="33"/>
 	</widget>
 	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.ConnectionIndicator">
 		<location x="0" y="0"/>
@@ -62,5 +41,6 @@
 <live-window>
 </live-window>
 	<hidden field="Field"/>
+	<hidden field="cannonRelay -from cannon"/>
 	<hidden field="robotDrive -from drivetrain periodic"/>
 </xml>

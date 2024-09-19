@@ -13,6 +13,7 @@ dependencies = [
     "wpilib", #really need?
     "robotpy",
     "mypy",
+    "robotpy-pathplannerlib"
     # could not find "ctre",
 ]
 

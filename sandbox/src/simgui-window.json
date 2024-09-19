@@ -51,12 +51,12 @@
     "###Joysticks": {
       "Collapsed": "0",
       "Pos": "255,19",
-      "Size": "976,219"
+      "Size": "976,278"
     },
     "###Keyboard 0 Settings": {
-      "Collapsed": "0",
-      "Pos": "4,-2",
-      "Size": "300,560"
+      "Collapsed": "1",
+      "Pos": "121,49",
+      "Size": "254,560"
     },
     "###Keyboard 2 Settings": {
       "Collapsed": "0",

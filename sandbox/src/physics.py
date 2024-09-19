@@ -70,43 +70,38 @@ class PhysicsEngine:
         backRightMotor_speed = self.backRightMotor.getMotorOutputLeadVoltage() / (12*(1-2*self.right_invert_YN))
         SmartDashboard.putNumber("backRightMotor_SIM getmotorOutput Volts by 12Volts", backRightMotor_speed)
 
-        if DriveConstant.kIsMecanum:
-            wheel_speeds = MecanumDriveWheelSpeeds(
-                frontLeftMotor_speed,
-                frontRightMotor_speed,
-                backLeftMotor_speed,
-                backRightMotor_speed
-            )
-            # Create an odometry object
-            drivetrain_kinematics = MecanumDriveKinematics(
-                    Translation2d(DriveConstant.kWheelBase / 2, DriveConstant.kTrackWidth / 2),
-                    Translation2d(DriveConstant.kWheelBase / 2, -DriveConstant.kTrackWidth / 2),
-                    Translation2d(-DriveConstant.kWheelBase / 2, DriveConstant.kTrackWidth / 2),
-                    Translation2d(-DriveConstant.kWheelBase / 2, -DriveConstant.kTrackWidth / 2)
+        match DriveConstant.kDriveTye:
+            case "Mecanum":
+                wheel_speeds = MecanumDriveWheelSpeeds(
+                    frontLeftMotor_speed,
+                    frontRightMotor_speed,
+                    backLeftMotor_speed,
+                    backRightMotor_speed
                 )
-            chassis_speeds = drivetrain_kinematics.toChassisSpeeds(wheel_speeds)
-            # Update the physics controller with the new state
-            self.physics_controller.drive(chassis_speeds, tm_diff)
-        else:
-            SmartDashboard.putString("drivetrain_kinematics in SIM", "DifferentialDriveKinematics")
-            '''
-            can't take in phoenix5 motor sim collection
-            sim_drivetrain = FourMotorDrivetrain(x_wheelbase = DriveConstant.kWheelBase * units.feet, speed=1 * units.fps)
-            wheel_speeds = sim_drivetrain.calculate(self.frontLeftMotor, self.frontRightMotor, self.backLeftMotor, self.backRightMotor)
-            '''
-'''
-            wheel_speeds = DifferentialDriveWheelSpeeds(
-                frontLeftMotor_speed,
-                frontRightMotor_speed
-            )
-            # Create an odometry object
-            drivetrain_kinematics = DifferentialDriveKinematics(DriveConstant.kTrackWidth)
-            SmartDashboard.putNumber("frontLeftMotor_SIM wheel_speeds", wheel_speeds.left)
-            chassis_speeds = drivetrain_kinematics.toChassisSpeeds(wheel_speeds) #t   oChassisSpeeds
-            SmartDashboard.putNumber("frontLeftMotor_SIM chassis_speeds", chassis_speeds.vx)
-            SmartDashboard.putNumber("frontLeftMotor_SIM chassis_speeds", chassis_speeds.omega)
-            DifferentialDriveOdometry.update(wheel_speeds.left, wheel_speeds.right, Rotation2d.fromDegrees(0))
-            # Update the physics controller with the new state
-            # self.physics_controller.drive(chassis_speeds, tm_diff)
-            self.physics_controller.update(.2)
-            self.physics_controller.move_robot(chassis_speeds)'''
+                # Create an odometry object
+                drivetrain_kinematics = MecanumDriveKinematics(
+                        Translation2d(DriveConstant.kWheelBase / 2, DriveConstant.kTrackWidth / 2),
+                        Translation2d(DriveConstant.kWheelBase / 2, -DriveConstant.kTrackWidth / 2),
+                        Translation2d(-DriveConstant.kWheelBase / 2, DriveConstant.kTrackWidth / 2),
+                        Translation2d(-DriveConstant.kWheelBase / 2, -DriveConstant.kTrackWidth / 2)
+                    )
+                chassis_speeds = drivetrain_kinematics.toChassisSpeeds(wheel_speeds)
+                # Update the physics controller with the new state
+                self.physics_controller.drive(chassis_speeds, tm_diff)
+            case "Tank":
+                # TODO: FIX!!!!!!!!!!!!!!!
+
+                wheel_speeds = DifferentialDriveWheelSpeeds(
+                    frontLeftMotor_speed,
+                    frontRightMotor_speed
+                )
+                # Create an odometry object
+                drivetrain_kinematics = DifferentialDriveKinematics(DriveConstant.kTrackWidth)
+                chassis_speeds = drivetrain_kinematics.toChassisSpeeds(wheel_speeds)
+                # Update the physics controller with the new state
+                self.physics_controller.drive(chassis_speeds, tm_diff)
+            case "Xdrive":
+                # TODO: FIX!!!!!!!!!!!!!!!
+                pass
+
+    

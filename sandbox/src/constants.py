@@ -77,7 +77,8 @@ class CAN_Address(IntEnum):
 
 #endregion
 class DriveConstant:
-    kIsMecanum = False
+    kDriveTye = "Xdrive" #"Tank" #"Mecanum"
+    # kIsMecanum = False
     kLeftMotor1Port = CAN_Address.THREE
     kLeftMotor2Port = CAN_Address.FOUR
     kRightMotor1Port = CAN_Address.ONE
